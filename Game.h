@@ -8,9 +8,11 @@ class Game{
 private:
   sf::RenderWindow* win;
   Player* player;
+  sf::Texture textureFile;
 
 public:
-  Game(int size, std::string title);
+  Game(int width,int height,
+     std::string title,std::string location, int sizeX, int sizeY);
   void run();
   ~Game();
 };
