@@ -14,5 +14,6 @@ public:
   int getCoins();
   int getXP();
   int getSeeds(std::string seedName);
+  void incremCoins();
 
 };
