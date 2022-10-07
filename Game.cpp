@@ -5,6 +5,14 @@
 //#include "Player.h"
 
 using namespace sf;
+bool Game::inBoxes(int x, int y, int n){
+  for(int i = 0; i < n; i++){
+    if(boxes[i].contains(x,y)){
+      return true;
+    }
+  }
+  return false;
+}
 Game::Game(int width, int height, std::string title, std::string location,
            int sizeX, int sizeY) {
   //create window to display game
@@ -13,35 +21,57 @@ Game::Game(int width, int height, std::string title, std::string location,
   //create player object
   player = new Player(95, 0);
 
+  //set current state of screen
+  screenState = "main";
+
+  //prepare boxes for buttons and menus
+  boxes = new sf::IntRect[5];
+
+  //prepare menu rectangles
+  rectangles = new sf::RectangleShape[2];
+  int rectWidth = 170;
+  int rectHeight = 65;    
+  int borderSize = 4;
+
+  //outer rect for toolbar
+  rectangles[0].setSize(Vector2f(rectWidth,rectHeight));
+  rectangles[0].setPosition(320 - rectWidth/2,480-rectHeight);
+  rectangles[0].setFillColor(Color(40,40,40));
+
+  //inner rect for toolbar
+  rectangles[1].setSize(Vector2f(rectWidth - 2*borderSize,rectHeight - 2*borderSize));
+  rectangles[1].setPosition(320 - rectWidth/2  + borderSize,480-rectHeight+borderSize);
+  rectangles[1].setFillColor(Color(80,80,80));
+    
   //setup font
   if (!font.loadFromFile("SHOWG.TTF")){
     std::cout << "Cant load font file\n";
   }
 
   //load texture containing all images
-  if(!textureFile.loadFromFile(location, sf::IntRect(0, 0, sizeX, sizeY))){
+  if(!textureFile.loadFromFile(location, IntRect(0, 0, sizeX, sizeY))){
     std::cout << "Cant load texture file\n";
   }
   textureFile.create(sizeX, sizeY);
 
   // convert texture to individual sprites
-  sprites = new sf::Sprite[8];
+  sprites = new Sprite[8];
   for(int i = 0; i < 8; i++){
     sprites[i].setTexture(textureFile);
   }
-  sprites[0].setTextureRect(sf::IntRect(0,0,32,32));//grass texture
-  sprites[1].setTextureRect(sf::IntRect(32,0,64,32));//land texture
-  sprites[2].setTextureRect(sf::IntRect(64,0,96,32));//wheat seeded texture
+  sprites[0].setTextureRect(IntRect(0,0,32,32));//grass texture
+  sprites[1].setTextureRect(IntRect(32,0,32,32));//land texture
+  sprites[2].setTextureRect(IntRect(64,0,32,32));//wheat seeded texture
   
-  sprites[3].setTextureRect(sf::IntRect(96,0,128,64));//wheat fully texture
+  sprites[3].setTextureRect(IntRect(96,0,32,64));//wheat fully texture
   sprites[3].setOrigin(0,32);
 
-  sprites[4].setTextureRect(sf::IntRect(96,64,128,128));//wheat half texture
+  sprites[4].setTextureRect(IntRect(96,64,32,64));//wheat half texture
   sprites[4].setOrigin(0,32);
 
-  sprites[5].setTextureRect(sf::IntRect(0,32,32,64));//seed icon texture
-  sprites[6].setTextureRect(sf::IntRect(32,32,64,364));//coin texture
-  sprites[7].setTextureRect(sf::IntRect(0,64,32,96));//scythe texture
+  sprites[5].setTextureRect(IntRect(0,32,32,32));//seed icon texture
+  sprites[6].setTextureRect(IntRect(32,32,32,32));//coin texture
+  sprites[7].setTextureRect(IntRect(0,64,32,32));//scythe texture
 
   // create 2d array of land tiles
   rows = win->getSize().y / 32;
@@ -60,10 +90,10 @@ Game::Game(int width, int height, std::string title, std::string location,
 }
 
 void Game::run() {
-  sf::Sprite fully_s;
+  Sprite fully_s;
   fully_s = sprites[3];
 
-  sf::Sprite half_s;
+  Sprite half_s;
   half_s = sprites[4];
 
 
@@ -73,8 +103,8 @@ void Game::run() {
       if (event.type == Event::Closed) {
         win->close();
       }
-      // if (event.type == sf::Event::KeyPressed) {
-      //   if (event.key.code == sf::Keyboard::Escape) {
+      // if (event.type == Event::KeyPressed) {
+      //   if (event.key.code == Keyboard::Escape) {
       //     std::cout << "the escape key was pressed" << std::endl;
       //     std::cout << "control:" << event.key.control << std::endl;
       //     std::cout << "alt:" << event.key.alt << std::endl;
@@ -82,21 +112,28 @@ void Game::run() {
       //     std::cout << "system:" << event.key.system << std::endl;
       //   }
       // }
-      if (event.type == sf::Event::MouseButtonPressed) {
-        if (event.mouseButton.button == sf::Mouse::Left) {
-          int Mx = event.mouseButton.x;
-          int My = event.mouseButton.y;
-          int TilePosX = Mx/(win->getSize().x/cols);
-          int TilePosY = My/(win->getSize().y/rows);
-          std::cout << "the Left button was pressed" << std::endl;
-          std::cout << "mouse x: " << Mx << ", "<< TilePosX << std::endl;
-          std::cout << "mouse y: " << My << ", "<< TilePosY << std::endl;
-          std::cout << std::endl;
+      if (event.type == Event::MouseButtonPressed) {
+        if (event.mouseButton.button == Mouse::Left) {
+          if(screenState == "seeds"){
 
-          land[TilePosY][TilePosX].setSprite(fully_s);
-          land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
+          }else{
+            if(1){
+              int Mx = event.mouseButton.x;
+              int My = event.mouseButton.y;
+              int TilePosX = Mx/(win->getSize().x/cols);
+              int TilePosY = My/(win->getSize().y/rows);
+              std::cout << "the Left button was pressed" << std::endl;
+              std::cout << "mouse x: " << Mx << ", "<< TilePosX << std::endl;
+              std::cout << "mouse y: " << My << ", "<< TilePosY << std::endl;
+              std::cout << std::endl;
+
+              land[TilePosY][TilePosX].setSprite(fully_s);
+              land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
+            }
+
+          }
         }
-      if (event.mouseButton.button == sf::Mouse::Right) {
+      if (event.mouseButton.button == Mouse::Right) {
           int Mx = event.mouseButton.x;
           int My = event.mouseButton.y;
           int TilePosX = Mx/(win->getSize().x/cols);
@@ -112,7 +149,7 @@ void Game::run() {
           land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
         }
       }
-      // if (event.type == sf::Event::MouseMoved) {
+      // if (event.type == Event::MouseMoved) {
       //   std::cout << "new mouse x: " << event.mouseMove.x << std::endl;
       //   std::cout << "new mouse y: " << event.mouseMove.y << std::endl;
       // }
@@ -134,13 +171,13 @@ void Game::run() {
     /////////////////
     
     //draw XP amount
-    sf::Text XPText;
+    Text XPText;
     XPText.setFont(font);
     XPText.setString(std::to_string(player->getXP()));
     XPText.setCharacterSize(50);
-    XPText.setFillColor(sf::Color::White);
+    XPText.setFillColor(Color::White);
     //set local origin to centre of text
-    sf::FloatRect XPText_Bounds = XPText.getLocalBounds();
+    FloatRect XPText_Bounds = XPText.getLocalBounds();
     XPText.setOrigin(XPText_Bounds.width/2,XPText_Bounds.height/2);
 
     XPText.setPosition(320,XPText_Bounds.height/2);
@@ -148,7 +185,7 @@ void Game::run() {
 
     //draw coins logo
     int coinHeight = 125;
-    sf::Sprite coinLogo;
+    Sprite coinLogo;
     coinLogo = sprites[6];
     coinLogo.setOrigin(16,16);
     coinLogo.scale(1.5,1.5);
@@ -156,33 +193,30 @@ void Game::run() {
     ;
     win->draw(coinLogo);
     //draw coins amount
-    sf::Text CoinsText;
+    Text CoinsText;
     CoinsText.setFont(font);
     CoinsText.setString(std::to_string(player->getCoins()));
     CoinsText.setCharacterSize(30);
-    CoinsText.setFillColor(sf::Color::Yellow);
+    CoinsText.setFillColor(Color::Yellow);
     //set local origin to right side
-    sf::FloatRect CoinsText_Bounds = CoinsText.getLocalBounds();
+    FloatRect CoinsText_Bounds = CoinsText.getLocalBounds();
     CoinsText.setOrigin(CoinsText_Bounds.width,CoinsText_Bounds.height/2);
     CoinsText.setPosition(575,coinHeight);
     win->draw(CoinsText);
 
-    //draw toolbar
-    int rectWidth = 170;
-    int rectHeight = 65;
-    int borderSize = 4;
-    sf::RectangleShape outerBox;
-    outerBox.setSize(sf::Vector2f(rectWidth,rectHeight));
-    outerBox.setPosition(320 - rectWidth/2,480-rectHeight);
-    outerBox.setFillColor(sf::Color(40,40,40));
+    //draw toolbar rectangle
+    win->draw(rectangles[0]);
+    win->draw(rectangles[1]);
 
-    sf::RectangleShape innerBox;
-    innerBox.setSize(sf::Vector2f(rectWidth - 2*borderSize,rectHeight - 2*borderSize));
-    innerBox.setPosition(320 - rectWidth/2  + borderSize,480-rectHeight+borderSize);
-    innerBox.setFillColor(sf::Color(80,80,80));
-
-    win->draw(outerBox);
-    win->draw(innerBox);
+    //draw toolbar icons
+    Sprite scythe_s = sprites[7];
+    scythe_s.setPosition(250,420);
+    scythe_s.setScale(1.5,1.5);
+    win->draw(scythe_s);
+    Sprite seeds_s = sprites[5];
+    seeds_s.setPosition(350,420);
+    seeds_s.setScale(1.5,1.5);
+    win->draw(seeds_s);
     
 
     ////////////////////////////
