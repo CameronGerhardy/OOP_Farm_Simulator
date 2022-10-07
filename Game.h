@@ -8,7 +8,10 @@ class Game{
 private:
   sf::RenderWindow* win;
   Player* player;
+  
+
   sf::Texture textureFile;
+  sf::Sprite* sprites;
 
 public:
   Game(int width,int height,
