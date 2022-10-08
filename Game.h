@@ -4,6 +4,7 @@
 #include <string>
 #include "Player.h"
 #include "Land.h"
+#include "Menu.h"
 
 class Game{
 private:
@@ -11,21 +12,15 @@ private:
   Player* player;
   Land** land;
 
-
   sf::Texture textureFile;
   sf::Sprite* sprites;
   sf::Font font;
 
+  Menu* toolbar;
+
   int cols;
   int rows;
 
-  std::string screenState;
-
-  sf::RectangleShape* rectangles;
-  sf::IntRect* boxes;
-  
-  bool inBoxes(int x, int y, int n);
-  bool inRectangles(int x, int y, int n);
 public:
   Game(int width,int height,
      std::string title,std::string location, int sizeX, int sizeY);
