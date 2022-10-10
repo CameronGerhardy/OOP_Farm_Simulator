@@ -1,7 +1,7 @@
 dest = output_files/
 sfml = -lsfml-graphics -lsfml-window -lsfml-system
 
-execute: $(dest)Player.o $(dest)Game.o $(dest)Land.o $(dest)Menu.o $(dest)Button.o
+execute: $(dest)Player.o $(dest)Game.o $(dest)Land.o $(dest)Menu.o $(dest)Button.o #$(dest)Timer.o
 	g++ -Wall -std=c++11 main.cpp $(dest)Player.o $(dest)Game.o $(dest)Land.o $(dest)Menu.o $(dest)Button.o $(sfml) -o $(dest)main.out
 
 $(dest)Game.o: Game.cpp
@@ -23,6 +23,10 @@ $(dest)Menu.o: Menu.cpp
 $(dest)Button.o: Button.cpp
 	g++ -Wall -std=c++11 Button.cpp -c
 	mv Button.o $(dest)
+
+# $(dest)Timer.o: Timer.cpp
+# 	g++ -Wall -std=c++11 Timer.cpp -c
+# 	mv Timer.o $(dest)
 
 run:
 	./$(dest)main.out

@@ -91,10 +91,21 @@ void Game::run() {
       if (event.type == sf::Event::MouseButtonPressed) {
         int Mx = event.mouseButton.x;
         int My = event.mouseButton.y;
+        //left mouse button clicked
         if (event.mouseButton.button == sf::Mouse::Left) {
-
+          //if user clicks in toobar
           if(toolbar->isInside(Mx,My)){
             std::cout << "inside Click\n";
+
+            //if user clicks on scythe button
+            if(toolbar->isClicked(0,Mx,My)){
+              std::cout << "Scythe clicked\n";
+            }
+
+            //if user clicks on seed button
+            if(toolbar->isClicked(1,Mx,My)){
+              std::cout << "Seeds clicked\n";
+            }
           }else{
             int TilePosX = Mx/(win->getSize().x/cols);
             int TilePosY = My/(win->getSize().y/rows);
@@ -149,7 +160,6 @@ void Game::run() {
     //set local origin to centre of text
     sf::FloatRect XPText_Bounds = XPText.getLocalBounds();
     XPText.setOrigin(XPText_Bounds.width/2,XPText_Bounds.height/2);
-
     XPText.setPosition(320,XPText_Bounds.height/2);
     win->draw(XPText);
 
@@ -160,8 +170,8 @@ void Game::run() {
     coinLogo.setOrigin(16,16);
     coinLogo.scale(1.5,1.5);
     coinLogo.setPosition(600,coinHeight);
-    
     win->draw(coinLogo);
+    
     //draw coins amount
     sf::Text CoinsText;
     CoinsText.setFont(font);

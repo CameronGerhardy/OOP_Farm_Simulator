@@ -8,8 +8,7 @@ Button::Button(sf::Sprite s){
 }
 
 bool Button::isClicked(int mouseX, int mouseY){
-  sf::IntRect rect = _img.getTextureRect();
-  return rect.contains(mouseX,mouseY);
+  return _img.getGlobalBounds().contains(mouseX,mouseY);
 }
 
 void Button::setPosition(int x, int y){
