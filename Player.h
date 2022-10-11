@@ -8,6 +8,8 @@ private:
   int _coins;
   int _xp;
   std::map<std::string,int> _seeds;
+
+  int _maxLand;
 public:
   Player();
   Player(int coins, int xp);

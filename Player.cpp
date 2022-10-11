@@ -3,19 +3,21 @@
 #include <string>
 
 Player::Player(){
-  Player::_coins = 0;
-  Player::_xp = 0;
-  Player::_seeds.insert({"Wheat",0});
-  Player::_seeds.insert({"Corn",0});
-  Player::_seeds.insert({"Beans",0});
+  _maxLand = 3;
+  _coins = 0;
+  _xp = 0;
+  _seeds.insert({"Wheat",0});
+  _seeds.insert({"Corn",0});
+  _seeds.insert({"Beans",0});
 }
 
 Player::Player(int coins, int xp){
-  Player::_coins = coins;
-  Player::_xp = xp;
-  Player::_seeds.insert({"Wheat",4});
-  Player::_seeds.insert({"Corn",0});
-  Player::_seeds.insert({"Beans",0});
+  _maxLand = 3;
+  _coins = coins;
+  _xp = xp;
+  _seeds.insert({"Wheat",4});
+  _seeds.insert({"Corn",0});
+  _seeds.insert({"Beans",0});
 }
 
 int Player::getCoins(){
@@ -31,5 +33,4 @@ int Player::getSeeds(std::string seedName){
 
 void Player::incremCoins(){
   _coins++;
-
 }

@@ -13,7 +13,10 @@ Game::Game(int width, int height, std::string title, std::string location,
   win = new RenderWindow(VideoMode(width, height), title);
 
   //create player object
-  player = new Player(95, 0);
+  player = new Player(0, 1);
+
+  //set toolMode
+  toolMode = 0;
 
   //setup font
   if (!font.loadFromFile("SHOWG.TTF")){
@@ -57,11 +60,10 @@ Game::Game(int width, int height, std::string title, std::string location,
   toolbar->setButtonPosition(1,360,430);
   toolbar->setButtonScale(1,1.5,1.5);
 
-  // create 2d array of land tiles
+  // create 2d array of grass tiles
   rows = win->getSize().y / 32;
   cols = win->getSize().x / 32;
   land = new Land*[rows];
-
   for (int r = 0; r < rows; r++) {
     land[r] = new Land[cols];
     for (int c = 0; c < cols; c++) {
@@ -70,6 +72,11 @@ Game::Game(int width, int height, std::string title, std::string location,
       land[r][c].setPosition(c,r);
     }
   }
+  // place first 2 land tiles
+  land[rows/2][cols/2].setSprite(sprites[1]);
+  land[rows/2][cols/2].setPosition(cols/2, rows/2);
+  land[rows/2 +1 ][cols/2 + 1].setSprite(sprites[1]);
+  land[rows/2 + 1][cols/2 + 1].setPosition(cols/2 + 1, rows/2 + 1);
 
 }
 
@@ -80,8 +87,12 @@ void Game::run() {
   sf::Sprite half_s;
   half_s = sprites[4];
 
+  sf::Sprite seed_s;
+  seed_s = sprites[2];
+
 
   while (win->isOpen()) {
+    //event handler
     Event event;
     while (win->pollEvent(event)) {
       if (event.type == Event::Closed) {
@@ -89,50 +100,60 @@ void Game::run() {
       }
 
       if (event.type == sf::Event::MouseButtonPressed) {
-        int Mx = event.mouseButton.x;
-        int My = event.mouseButton.y;
+        mouseX = event.mouseButton.x;
+        mouseY = event.mouseButton.y;
         //left mouse button clicked
         if (event.mouseButton.button == sf::Mouse::Left) {
           //if user clicks in toobar
-          if(toolbar->isInside(Mx,My)){
+          if(toolbar->isInside(mouseX,mouseY)){
             std::cout << "inside Click\n";
 
             //if user clicks on scythe button
-            if(toolbar->isClicked(0,Mx,My)){
+            if(toolbar->isClicked(0,mouseX,mouseY)){
               std::cout << "Scythe clicked\n";
+              toolMode = 1;
             }
 
             //if user clicks on seed button
-            if(toolbar->isClicked(1,Mx,My)){
+            if(toolbar->isClicked(1,mouseX,mouseY)){
               std::cout << "Seeds clicked\n";
+              toolMode = 0;
             }
+          
+          // if user doesn't click on toolbar
           }else{
-            int TilePosX = Mx/(win->getSize().x/cols);
-            int TilePosY = My/(win->getSize().y/rows);
-            std::cout << "the Left button was pressed" << std::endl;
-            std::cout << "mouse x: " << Mx << ", "<< TilePosX << std::endl;
-            std::cout << "mouse y: " << My << ", "<< TilePosY << std::endl;
-            std::cout << std::endl;
+            int TilePosX = mouseX/(win->getSize().x/cols);
+            int TilePosY = mouseY/(win->getSize().y/rows);
+            if(toolMode == 1 && land[TilePosY][TilePosX].getLandType() == "Land"){
+              
+              // std::cout << "the Left button was pressed" << std::endl;
+              // std::cout << "mouse x: " << mouseX << ", "<< TilePosX << std::endl;
+              // std::cout << "mouse y: " << mouseY << ", "<< TilePosY << std::endl;
+              // std::cout << std::endl;
 
-            land[TilePosY][TilePosX].setSprite(fully_s);
-            land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
+              land[TilePosY][TilePosX].setSprite(seed_s);
+              land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
+            }
+            
           }
         }
-      if (event.mouseButton.button == sf::Mouse::Right) {
-          int Mx = event.mouseButton.x;
-          int My = event.mouseButton.y;
-          int TilePosX = Mx/(win->getSize().x/cols);
-          int TilePosY = My/(win->getSize().y/rows);
-          std::cout << "the Right button was pressed" << std::endl;
-          std::cout << "mouse x: " << Mx << ", "<< TilePosX << std::endl;
-          std::cout << "mouse y: " << My << ", "<< TilePosY << std::endl;
-          std::cout << std::endl;
+        // mouse right clicks
+        if (event.mouseButton.button == sf::Mouse::Right) {
+          int mouseX = event.mouseButton.x;
+          int mouseY = event.mouseButton.y;
+          int TilePosX = mouseX/(win->getSize().x/cols);
+          int TilePosY = mouseY/(win->getSize().y/rows);
+          // std::cout << "the Right button was pressed" << std::endl;
+          // std::cout << "mouse x: " << mouseX << ", "<< TilePosX << std::endl;
+          // std::cout << "mouse y: " << mouseY << ", "<< TilePosY << std::endl;
+          // std::cout << std::endl;
 
           player->incremCoins();
 
           land[TilePosY][TilePosX].setSprite(half_s);
           land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
         }
+      
       }
     }
     //clear the window
@@ -151,7 +172,7 @@ void Game::run() {
     /////draw Overlay
     /////////////////
     
-    //draw XP amount
+    /* #region draw XP amount */
     sf::Text XPText;
     XPText.setFont(font);
     XPText.setString(std::to_string(player->getXP()));
@@ -162,18 +183,19 @@ void Game::run() {
     XPText.setOrigin(XPText_Bounds.width/2,XPText_Bounds.height/2);
     XPText.setPosition(320,XPText_Bounds.height/2);
     win->draw(XPText);
+    /* #endregion */
 
-    //draw coins logo
+    /* #region draw coins logo */
     int coinHeight = 125;
-    sf::Sprite coinLogo;
-    coinLogo = sprites[6];
+    sf::Sprite coinLogo = sprites[6];
     coinLogo.setOrigin(16,16);
     coinLogo.scale(1.5,1.5);
     coinLogo.setPosition(600,coinHeight);
     win->draw(coinLogo);
+    /* #endregion */
     
-    //draw coins amount
-    sf::Text CoinsText;
+    /* #region draw coins amount */
+    Text CoinsText;
     CoinsText.setFont(font);
     CoinsText.setString(std::to_string(player->getCoins()));
     CoinsText.setCharacterSize(30);
@@ -183,9 +205,20 @@ void Game::run() {
     CoinsText.setOrigin(CoinsText_Bounds.width,CoinsText_Bounds.height/2);
     CoinsText.setPosition(575,coinHeight);
     win->draw(CoinsText);
+    /* #endregion */
 
     //draw toolbar
     toolbar->draw(win);
+
+    /* #region scythe overlay */
+    Sprite scythe = sprites[7];
+    if(toolMode == 1){
+      //std::cout << toolMode << std::endl;
+      scythe.setPosition(Mouse::getPosition(*win).x,Mouse::getPosition(*win).y);
+      scythe.setPosition(mouseX,mouseY);
+    }else{scythe.setPosition(0,0);}
+    win->draw(scythe);
+    /* #endregion */
 
     ////////////////////////////
 

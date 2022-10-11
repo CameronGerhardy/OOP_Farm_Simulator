@@ -21,6 +21,11 @@ private:
   int cols;
   int rows;
 
+  int toolMode;// 0-nothing , 1-cut, 2-plant
+
+  int mouseX;//mouse Coords
+  int mouseY;
+
 public:
   Game(int width,int height,
      std::string title,std::string location, int sizeX, int sizeY);

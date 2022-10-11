@@ -3,11 +3,15 @@
 
 Land::Land(sf::Sprite sprite){
   _sprite =sprite;
+  _TilePosX =0;
+  _TilePosY =0;
+  _landType = "Land";
 }
 
 Land::Land(){
   _TilePosX =0;
   _TilePosY =0;
+  _landType = "Land";
 }
 void Land::setPosition(int TilePosX, int TilePosY){
   _TilePosX = TilePosX;
@@ -20,4 +24,8 @@ void Land::setSprite(sf::Sprite sprite){
 
 sf::Sprite Land::getSprite(){
   return _sprite;
+}
+
+std::string Land::getLandType(){
+  return _landType;
 }
