@@ -12,4 +12,4 @@ public:
   void setSprite(sf::Sprite sprite);
   void setPosition(int TilePosX, int TilePosY);
   sf::Sprite getSprite();
-};
+}; 

@@ -5,18 +5,20 @@
 // these cost $2 a seed
 
 
-#ifndef Wheat_H
-#define Wheat_H
+#ifndef WheatCrop_H
+#define WheatCrop_H
 #include <string>
 #include "Timer.cpp"
 using namespace std;
     
 class Wheat{
 
-    
+    private: 
+        int WheatQuanity;
+
     public:
         
-        int WheatQuanity;
+        
         Wheat();
 
         PlantCrop();

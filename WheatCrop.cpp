@@ -1,4 +1,4 @@
-#include "Wheat.h"
+#include "WheatCrop.h"
 
 void Wheat::Wheat(){
 
@@ -16,15 +16,11 @@ int Wheat::get_number_of_wheat_seeds(){
 }
 
 
-HarvestCrop(){
+Wheat::HarvestCrop(){
     if(Timer::GetDuration() >= 120){
         WheatQuantity = WheatQuantity+2;
         // square becomes empty 
+        delete Timer;
     }
 }
-
-
-
- 
-        
-        
+       
