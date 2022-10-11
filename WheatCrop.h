@@ -13,13 +13,18 @@ using namespace std;
     
 class Wheat{
 
-    int quanity;
+    
     public:
+        
+        int quanity;
         Wheat();
-        Wheat(int quanity);  
+        Wheat(int quanity);
+
+        
+
     private:
 
-        timer::getduration   
+         
 };  
  
 #endif

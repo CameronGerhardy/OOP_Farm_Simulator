@@ -1,5 +1,5 @@
 #include "Timer.h"
-using namespace std;
+
 void Timer::Start()
 {
     m_StartTime = std::chrono::high_resolution_clock::now();
