@@ -16,14 +16,12 @@ class Wheat{
     
     public:
         
-        int quanity;
+        int WheatQuanity;
         Wheat();
-        Wheat(int quanity);
 
-        
-
-    private:
-
+        PlantCrop();
+        int get_number_of_wheat_seeds();
+        HarvestCrop();
          
 };  
  
