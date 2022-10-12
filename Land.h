@@ -16,5 +16,8 @@ public:
   void setPosition(int TilePosX, int TilePosY);
   sf::Sprite getSprite();
   void setLandType(std::string landType);
-  virtual std::string getLandType();
+  std::string getLandType();
+
+  virtual void HarvestCrop(); 
+  virtual void PlantCrop(); 
 }; 

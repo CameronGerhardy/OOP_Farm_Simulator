@@ -32,3 +32,6 @@ void Land::setLandType(std::string landType){
 std::string Land::getLandType(){
   return _landType;
 }
+
+void Land::HarvestCrop(){}
+void Land::PlantCrop(){}
