@@ -16,6 +16,7 @@ class Wheat: Land{
 
     private: 
         int WheatQuanity;
+        Timer timer;
 
     public:
         
@@ -24,7 +25,7 @@ class Wheat: Land{
 
         int get_number_of_wheat_seeds();
         void ImcrementXP(*Player p, int XP);
-        void incremXP(int n);
+    
          
 };  
  

@@ -8,7 +8,7 @@ Wheat::Wheat(){
 }
 
 void Wheat::PlantCrop(){
-    Timer::Start();
+    timer.Start();
     WheatQuantity = WheatQuanity-1;
     // square becomes used
 }
@@ -22,10 +22,9 @@ void ImcrementXP(*Player p, int XP){
         }
 
 void Wheat::HarvestCrop(){
-    if(Timer::GetDuration() >= 120){
+    if(Timer::elapsedSeconds() >= 120){
         WheatQuantity = WheatQuantity+2;
         // square becomes empty 
-        delete Timer;
         ImcrementXP(*Player p, int XP);
         
     }
