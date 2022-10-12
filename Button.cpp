@@ -19,6 +19,12 @@ void Button::setScale(int xS, int yS){
   _img.setScale(xS,yS);
 }
 
-void Button::draw(sf::RenderWindow* win){
+void Button::setText(sf::Text t){
+  _text = t;
+}
+
+void Button::draw(sf::RenderWindow* win, bool drawText){
   win->draw(_img);
+  if(drawText){win->draw(_text);}
+  
 }

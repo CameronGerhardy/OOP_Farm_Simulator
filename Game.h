@@ -22,7 +22,7 @@ private:
   int cols;
   int rows;
 
-  int toolMode;// 0-nothing , 1-cut, 2-plant
+  int toolMode;// 0-nothing , 1-cut, 2-selectplant, 3-plant,
 
   int mouseX;//mouse Coords
   int mouseY;

@@ -16,12 +16,12 @@ Menu::Menu(int nButtons,sf::Vector2f size, sf::Vector2i pos, int borderSize){
 
 }
 
-void Menu::draw(sf::RenderWindow* win){
+void Menu::draw(sf::RenderWindow* win, bool drawText){
   for(int r = 0; r < 2; r++){
     win->draw(_rectangles[r]);
   }
   for(int b = 0; b < _nButtons; b++){
-    _buttons[b].draw(win);
+    _buttons[b].draw(win, drawText);
   }
 }
 
@@ -43,6 +43,10 @@ void Menu::setButtonPosition(int index, int x, int y){
 }
 void Menu::setButtonScale(int index, int xS, int yS){
   _buttons[index].setScale(xS,yS);
+}
+
+void Menu::setText(int index, sf::Text t){
+  _buttons[index].setText(t);
 }
 
 

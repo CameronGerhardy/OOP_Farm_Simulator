@@ -1,6 +1,6 @@
 #include "WheatCrop.h"
 #include "Land.h"
-#include "player.h"
+#include "Player.h"
 
 
 Wheat::Wheat(){

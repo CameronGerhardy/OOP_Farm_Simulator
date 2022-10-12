@@ -16,10 +16,12 @@ private:
 public:
   Menu();
   Menu(int nButtons,sf::Vector2f size, sf::Vector2i pos, int borderSize);
-  void draw(sf::RenderWindow* win);
+  void draw(sf::RenderWindow* win, bool drawText);
   void setButton(int index, Button b);
   void setButtonPosition(int index, int x, int y);
   void setButtonScale(int index, int xS, int yS);
+
+  void setText(int index, sf::Text t);
 
   bool isClicked(int index, int mouseX, int mouseY);
   bool isInside(int mouseX, int mouseY);

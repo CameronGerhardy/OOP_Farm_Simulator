@@ -71,16 +71,40 @@ Game::Game(int width, int height, std::string title, std::string location,
   borderSize = 2;
   seedbar = new Menu(3,sf::Vector2f(rectWidth,rectHeight),sf::Vector2i(320-rectWidth/2,480-rectHeight),borderSize);
   seedbar->setButton(0,Button(sprites[5]));//seed
-  seedbar->setButtonPosition(0,200,330);
+  seedbar->setButtonPosition(0,180,370);
   seedbar->setButtonScale(0,2.5,2.5);
+  sf::Text t1;
+  t1.setFont(font);
+  t1.setFillColor(sf::Color::Black);
+  t1.setCharacterSize(20);
+  t1.setString(std::to_string(player->getSeeds("Wheat")));
+  t1.setOrigin(t1.getLocalBounds().width/2, t1.getLocalBounds().height/2);
+  t1.setPosition(210,460);
+  seedbar->setText(0,t1);
 
   seedbar->setButton(1,Button(sprites[5]));//seed
-  seedbar->setButtonPosition(1,300,330);
+  seedbar->setButtonPosition(1,300,370);
   seedbar->setButtonScale(1,2.5,2.5);
+  sf::Text t2;
+  t2.setFont(font);
+  t2.setFillColor(sf::Color::Black);
+  t2.setCharacterSize(20);
+  t2.setString(std::to_string(player->getSeeds("Corn")));
+  t2.setOrigin(t2.getLocalBounds().width/2, t2.getLocalBounds().height/2);
+  t2.setPosition(330,460);
+  seedbar->setText(1,t2);
 
   seedbar->setButton(2,Button(sprites[5]));//seed
-  seedbar->setButtonPosition(2,400,330);
+  seedbar->setButtonPosition(2,420,370);
   seedbar->setButtonScale(2,2.5,2.5);
+  sf::Text t3;
+  t3.setFont(font);
+  t3.setFillColor(sf::Color::Black);
+  t3.setCharacterSize(20);
+  t3.setString(std::to_string(player->getSeeds("Beans")));
+  t3.setOrigin(t3.getLocalBounds().width/2, t3.getLocalBounds().height/2);
+  t3.setPosition(450,460);
+  seedbar->setText(2,t3);
   /* #endregion */
 
   /* #region create 2d array of grass tiles */
@@ -94,13 +118,16 @@ Game::Game(int width, int height, std::string title, std::string location,
       // set them all to grass tiles and set the positions of them
       land[r][c].setSprite(sprites[0]);
       land[r][c].setPosition(c,r);
+      land[r][c].setLandType("Grass");
     }
   }
   // place first 2 land tiles
   land[rows/2][cols/2].setSprite(sprites[1]);
   land[rows/2][cols/2].setPosition(cols/2, rows/2);
+  land[rows/2][cols/2].setLandType("Land");
   land[rows/2 +1 ][cols/2 + 1].setSprite(sprites[1]);
   land[rows/2 + 1][cols/2 + 1].setPosition(cols/2 + 1, rows/2 + 1);
+  land[rows/2 + 1][cols/2 + 1].setLandType("Land");
   /* #endregion */
 
 }
@@ -142,7 +169,7 @@ void Game::run() {
             //if user clicks on seed button
             if(toolbar->isClicked(1,mouseX,mouseY)){
               std::cout << "Seeds clicked\n";
-              toolMode = 0;
+              toolMode = 2;
             }
           
           // if user doesn't click on toolbar
@@ -233,10 +260,15 @@ void Game::run() {
     /* #endregion */
 
     //draw toolbar
-    toolbar->draw(win);
-
+    if(toolMode == 0 || toolMode == 1){
+      toolbar->draw(win,false);
+    }
+    
     //draw seedbar
-    seedbar->draw(win);
+    if(toolMode == 2){
+      seedbar->draw(win,true);
+    }
+    
 
     /* #region scythe overlay */
     Sprite scythe = sprites[7];
