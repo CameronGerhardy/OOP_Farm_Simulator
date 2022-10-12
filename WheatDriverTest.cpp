@@ -1,6 +1,9 @@
 #include "Menu.h"
 #include "WheatCrop.cpp"
 #include "Land.cpp"
+#include "Land.h"
+#include "Player.h"
+#include "Player.cpp"
 #include <SFML/Graphics.hpp>
 
 int main()
@@ -10,29 +13,24 @@ int main()
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
-    while (window->isOpen())
-    {
-        sf::Event event;
-        while (window->pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed){
-                window->close();
-            }
-                
-        }
-
         window->clear();
         window->draw(shape);
 
         Wheat w;
-        Player p;
+        Land l;
+        Player p(3,4);
 
-        w.PLantCrop(&p);
+        w.PlantCrop(&p);
+        
 
         cout << p.getSeeds("Wheat");
 
         window->display();
-    }
+        w.HarvestCrop(&p);
+        p.incremCoins(4);
+        p.incremXP(4);
 
+        cout << p.getCoins();
+        cout << p.getXP();
     return 0;
 }

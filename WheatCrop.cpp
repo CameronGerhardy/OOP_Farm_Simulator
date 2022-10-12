@@ -15,13 +15,13 @@ void Wheat::PlantCrop(Player* p){
 }
 
 
-}
-void ImcrementXP(Player* p, int XP){
+
+void Wheat::ImcrementXP(Player* p, int XP){
         p->incremXP(XP);    
         }
 
 void Wheat::HarvestCrop(Player* p){
-    if(timer.elapsedSeconds() >= 120){
+    if(timer.elapsedSeconds() >= 0){
         p->changeSeeds("Wheat",p->getSeeds("Wheat")+2);
         // square becomes empty 
         ImcrementXP(p, 2);
