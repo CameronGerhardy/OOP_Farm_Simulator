@@ -7,25 +7,26 @@ Wheat::Wheat(){
     _landType = "Wheat";
 }
 
-void Wheat::PlantCrop(){
-    timer.Start();
-    WheatQuantity = WheatQuanity-1;
+void Wheat::PlantCrop(Player* p){
+    timer.start();
+    p->changeSeeds("Wheat",p->getSeeds("Wheat")-1);
+
     // square becomes used
 }
 
 
 int Wheat::get_number_of_wheat_seeds(){
-    return WheatQuanity;
+    return 0;//WheatQuantity;
 }
-void ImcrementXP(*Player p, int XP){
+void ImcrementXP(Player* p, int XP){
         p->incremXP(XP);    
         }
 
-void Wheat::HarvestCrop(){
-    if(Timer::elapsedSeconds() >= 120){
-        WheatQuantity = WheatQuantity+2;
+void Wheat::HarvestCrop(Player* p){
+    if(timer.elapsedSeconds() >= 120){
+        p->changeSeeds("Wheat",p->getSeeds("Wheat")+2);
         // square becomes empty 
-        ImcrementXP(*Player p, int XP);
+        ImcrementXP(p, 2);
         
     }
 }

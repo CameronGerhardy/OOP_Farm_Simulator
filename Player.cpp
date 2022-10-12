@@ -38,3 +38,7 @@ void Player::incremCoins(int n){
 void Player::incremXP(int n){
   _xp+=n;
 }
+
+void Player::changeSeeds(std::string seedName, int amount){
+  _seeds[seedName] = amount;
+}

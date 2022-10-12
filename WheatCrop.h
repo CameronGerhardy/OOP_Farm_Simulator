@@ -12,10 +12,9 @@
 #include "Timer.cpp"
 using namespace std;
     
-class Wheat: Land{
+class Wheat : public Land{
 
     private: 
-        int WheatQuanity;
         Timer timer;
 
     public:
@@ -24,8 +23,10 @@ class Wheat: Land{
         Wheat();
 
         int get_number_of_wheat_seeds();
-        void ImcrementXP(*Player p, int XP);
-    
+        void ImcrementXP(Player* p, int XP);
+
+        virtual void HarvestCrop(Player* p); 
+        virtual void PlantCrop(Player* p); 
          
 };  
  
