@@ -29,6 +29,7 @@ Game::Game(int width, int height, std::string title, std::string location,
   }
   textureFile.create(sizeX, sizeY);
 
+  /* #region convert texture to individual sprites*/
   // convert texture to individual sprites
   sprites = new sf::Sprite[8];
   for(int i = 0; i < 8; i++){
@@ -47,7 +48,9 @@ Game::Game(int width, int height, std::string title, std::string location,
   sprites[5].setTextureRect(sf::IntRect(0,32,32,32));//seed icon texture
   sprites[6].setTextureRect(sf::IntRect(32,32,32,32));//coin texture
   sprites[7].setTextureRect(sf::IntRect(0,64,32,32));//scythe texture
+  /* #endregion */
 
+  /* #region setup toolbar*/
   //setup toolbar
   int rectWidth = 170;
   int rectHeight = 65;
@@ -59,7 +62,28 @@ Game::Game(int width, int height, std::string title, std::string location,
   toolbar->setButton(1,Button(sprites[5]));//seed
   toolbar->setButtonPosition(1,360,430);
   toolbar->setButtonScale(1,1.5,1.5);
+  /* #endregion */
 
+  /* #region setup seedbar*/
+  //setup seedbar
+  rectWidth = 400;
+  rectHeight = 150;
+  borderSize = 2;
+  seedbar = new Menu(3,sf::Vector2f(rectWidth,rectHeight),sf::Vector2i(320-rectWidth/2,480-rectHeight),borderSize);
+  seedbar->setButton(0,Button(sprites[5]));//seed
+  seedbar->setButtonPosition(0,200,400);
+  seedbar->setButtonScale(0,2.5,2.5);
+
+  seedbar->setButton(1,Button(sprites[5]));//seed
+  seedbar->setButtonPosition(1,300,400);
+  seedbar->setButtonScale(1,2.5,2.5);
+
+  seedbar->setButton(2,Button(sprites[5]));//seed
+  seedbar->setButtonPosition(2,400,400);
+  seedbar->setButtonScale(2,2.5,2.5);
+  /* #endregion */
+
+  /* #region create 2d array of grass tiles */
   // create 2d array of grass tiles
   rows = win->getSize().y / 32;
   cols = win->getSize().x / 32;
@@ -77,6 +101,7 @@ Game::Game(int width, int height, std::string title, std::string location,
   land[rows/2][cols/2].setPosition(cols/2, rows/2);
   land[rows/2 +1 ][cols/2 + 1].setSprite(sprites[1]);
   land[rows/2 + 1][cols/2 + 1].setPosition(cols/2 + 1, rows/2 + 1);
+  /* #endregion */
 
 }
 
@@ -148,7 +173,7 @@ void Game::run() {
           // std::cout << "mouse y: " << mouseY << ", "<< TilePosY << std::endl;
           // std::cout << std::endl;
 
-          player->incremCoins();
+          player->incremCoins(1);
 
           land[TilePosY][TilePosX].setSprite(half_s);
           land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
@@ -210,12 +235,15 @@ void Game::run() {
     //draw toolbar
     toolbar->draw(win);
 
+    //draw seedbar
+    seedbar->draw(win);
+
     /* #region scythe overlay */
     Sprite scythe = sprites[7];
     if(toolMode == 1){
       //std::cout << toolMode << std::endl;
       scythe.setPosition(Mouse::getPosition(*win).x,Mouse::getPosition(*win).y);
-      scythe.setPosition(mouseX,mouseY);
+      //scythe.setPosition(mouseX,mouseY);
     }else{scythe.setPosition(0,0);}
     win->draw(scythe);
     /* #endregion */

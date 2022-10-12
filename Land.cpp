@@ -26,6 +26,9 @@ sf::Sprite Land::getSprite(){
   return _sprite;
 }
 
+void Land::setLandType(std::string landType){
+  _landType = landType;
+}
 std::string Land::getLandType(){
   return _landType;
 }

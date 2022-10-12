@@ -7,11 +7,12 @@
 
 #ifndef WheatCrop_H
 #define WheatCrop_H
+#include "Land.h"
 #include <string>
 #include "Timer.cpp"
 using namespace std;
     
-class Wheat{
+class Wheat: Land{
 
     private: 
         int WheatQuanity;
@@ -21,9 +22,9 @@ class Wheat{
         
         Wheat();
 
-        PlantCrop();
+        void PlantCrop();
         int get_number_of_wheat_seeds();
-        HarvestCrop();
+        void HarvestCrop();
          
 };  
  

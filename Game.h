@@ -17,6 +17,7 @@ private:
   sf::Font font;
 
   Menu* toolbar;
+  Menu* seedbar;
 
   int cols;
   int rows;
