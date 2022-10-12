@@ -1,5 +1,6 @@
 #include "WheatCrop.h"
 #include "Land.h"
+#include "player.h"
 
 
 Wheat::Wheat(){
@@ -16,13 +17,17 @@ void Wheat::PlantCrop(){
 int Wheat::get_number_of_wheat_seeds(){
     return WheatQuanity;
 }
-
+void ImcrementXP(*Player p, int XP){
+        p->incremXP(XP);    
+        }
 
 void Wheat::HarvestCrop(){
     if(Timer::GetDuration() >= 120){
         WheatQuantity = WheatQuantity+2;
         // square becomes empty 
         delete Timer;
+        ImcrementXP(*Player p, int XP);
+        
     }
 }
        

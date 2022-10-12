@@ -22,9 +22,9 @@ class Wheat: Land{
         
         Wheat();
 
-        void PlantCrop();
         int get_number_of_wheat_seeds();
-        void HarvestCrop();
+        void ImcrementXP(*Player p, int XP);
+        void incremXP(int n);
          
 };  
  
