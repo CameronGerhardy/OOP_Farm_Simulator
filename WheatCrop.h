@@ -22,7 +22,6 @@ class Wheat : public Land{
         
         Wheat();
 
-        int get_number_of_wheat_seeds();
         void ImcrementXP(Player* p, int XP);
 
         virtual void HarvestCrop(Player* p); 

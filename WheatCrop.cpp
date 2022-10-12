@@ -15,8 +15,6 @@ void Wheat::PlantCrop(Player* p){
 }
 
 
-int Wheat::get_number_of_wheat_seeds(){
-    return 0;//WheatQuantity;
 }
 void ImcrementXP(Player* p, int XP){
         p->incremXP(XP);    
