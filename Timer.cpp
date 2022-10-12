@@ -1,12 +1,30 @@
 #include "Timer.h"
 
-void Timer::Start()
-{
-    m_StartTime = std::chrono::high_resolution_clock::now();
+#include <chrono>
+#include <cmath>
+#include <ctime>
+#include <iostream>
+
+void Timer::start() {
+  m_StartTime = std::chrono::system_clock::now();
+  m_bRunning = true;
 }
 
-float Timer::GetDuration()
-{
-    std::chrono::duration<float> duration = std::chrono::high_resolution_clock::now() - m_StartTime;
-    return duration.count();
+void Timer::stop() {
+  m_EndTime = std::chrono::system_clock::now();
+  m_bRunning = false;
 }
+
+double Timer::elapsedMilliseconds() {
+  std::chrono::time_point<std::chrono::system_clock> endTime;
+
+  if (m_bRunning) {
+    endTime = std::chrono::system_clock::now();
+  } else {
+    endTime = m_EndTime;
+  }
+
+  return std::chrono::duration_cast<std::chrono::milliseconds>(endTime - m_StartTime).count();
+}
+
+double Timer::elapsedSeconds() { return elapsedMilliseconds() / 1000.0; }
