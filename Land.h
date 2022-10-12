@@ -9,17 +9,18 @@ private:
   int _TilePosY;
 protected:
   sf::Sprite _sprite;
-  std::string _landType;
 public:
   Land();
   Land(sf::Sprite sprite);
   void setSprite(sf::Sprite sprite);
   void setPosition(int TilePosX, int TilePosY);
   sf::Sprite getSprite();
-  void setLandType(std::string landType);
-  std::string getLandType();
+  
+  //abstract
+  virtual std::string getLandType() = 0;
 
   virtual void HarvestCrop(Player* p); 
-  virtual void PlantCrop(); 
+  virtual void PlantCrop(Player* p); 
+
 }; 
 

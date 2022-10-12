@@ -18,11 +18,10 @@ class Wheat : public Land{
         Timer timer;
 
     public:
-        
-        
-        Wheat();
 
-        void ImcrementXP(Player* p, int XP);
+        std::string getLandType();
+        
+        void IncrementXP(Player* p, int XP);
 
         virtual void HarvestCrop(Player* p); 
         virtual void PlantCrop(Player* p); 

@@ -1,4 +1,4 @@
-#include "BeanCrop.h"
+#include "Bean.h"
 #include "Land.h"
 #include "Player.h"
 
@@ -15,16 +15,15 @@ void Bean::PlantCrop(Player* p){
 }
 
 
-}
-void ImcrementXP(Player* p, int XP){
+void Bean::ImcrementXP(Player* p, int XP){
         p->incremXP(XP);    
-        }
+}
 
-void Corn::HarvestCrop(Player* p){
+void Bean::HarvestCrop(Player* p){
     if(timer.elapsedSeconds() >= 600){
         p->changeSeeds("Bean",p->getSeeds("Bean")+2);
         // square becomes empty 
-        ImcrementXP(p, 2);
+        ImcrementXP(p, 3);
         
     }
 }

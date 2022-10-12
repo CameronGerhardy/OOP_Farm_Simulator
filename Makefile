@@ -1,8 +1,8 @@
 dest = output_files/
 sfml = -lsfml-graphics -lsfml-window -lsfml-system
 
-execute: $(dest)Player.o $(dest)Game.o $(dest)Land.o $(dest)Menu.o $(dest)Button.o #$(dest)Timer.o
-	g++ -Wall -std=c++11 main.cpp $(dest)Player.o $(dest)Game.o $(dest)Land.o $(dest)Menu.o $(dest)Button.o $(sfml) -o $(dest)main.out
+execute: $(dest)Player.o $(dest)Game.o $(dest)Land.o $(dest)Menu.o $(dest)Button.o $(dest)Farmland.o $(dest)Grassland.o $(dest)WheatCrop.o#$(dest)Timer.o
+	g++ -Wall -std=c++11 main.cpp $(dest)Player.o $(dest)Game.o $(dest)Land.o $(dest)Menu.o $(dest)Button.o $(dest)Farmland.o $(dest)Grassland.o $(sfml) -o $(dest)main.out
 
 $(dest)Game.o: Game.cpp
 	g++ -Wall -std=c++11 Game.cpp -c
@@ -23,6 +23,18 @@ $(dest)Menu.o: Menu.cpp
 $(dest)Button.o: Button.cpp
 	g++ -Wall -std=c++11 Button.cpp -c
 	mv Button.o $(dest)
+
+$(dest)Farmland.o: Farmland.cpp
+	g++ -Wall -std=c++11 Farmland.cpp -c
+	mv Farmland.o $(dest)
+
+$(dest)Grassland.o: Grassland.cpp
+	g++ -Wall -std=c++11 Grassland.cpp -c
+	mv Grassland.o $(dest)
+
+$(dest)WheatCrop.o: WheatCrop.cpp
+	g++ -Wall -std=c++11 WheatCrop.cpp -c
+	mv WheatCrop.o $(dest)
 
 # $(dest)Timer.o: Timer.cpp
 # 	g++ -Wall -std=c++11 Timer.cpp -c

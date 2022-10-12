@@ -6,13 +6,11 @@ Land::Land(sf::Sprite sprite){
   _sprite =sprite;
   _TilePosX =0;
   _TilePosY =0;
-  _landType = "Land";
 }
 
 Land::Land(){
   _TilePosX =0;
   _TilePosY =0;
-  _landType = "Land";
 }
 void Land::setPosition(int TilePosX, int TilePosY){
   _TilePosX = TilePosX;
@@ -27,12 +25,9 @@ sf::Sprite Land::getSprite(){
   return _sprite;
 }
 
-void Land::setLandType(std::string landType){
-  _landType = landType;
-}
-std::string Land::getLandType(){
-  return _landType;
-}
+// void Land::setLandType(std::string landType){
+//   _landType = landType;
+// }
 
-void Land::HarvestCrop(Player* P){}
-void Land::PlantCrop(){}
+void Land::HarvestCrop(Player* p){}
+void Land::PlantCrop(Player* p){}

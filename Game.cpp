@@ -1,6 +1,9 @@
 #include "Game.h"
 #include "Menu.h"
 #include "Button.h"
+#include "Land.h"
+#include "Grassland.h"
+#include "Farmland.h"
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -15,8 +18,9 @@ Game::Game(int width, int height, std::string title, std::string location,
   //create player object
   player = new Player(0, 1);
 
-  //set toolMode
+  //set toolMode and seedMode
   toolMode = 0;
+  seedMode = 0;
 
   //setup font
   if (!font.loadFromFile("SHOWG.TTF")){
@@ -68,10 +72,10 @@ Game::Game(int width, int height, std::string title, std::string location,
   //setup seedbar
   rectWidth = 400;
   rectHeight = 150;
-  borderSize = 2;
-  seedbar = new Menu(3,sf::Vector2f(rectWidth,rectHeight),sf::Vector2i(320-rectWidth/2,480-rectHeight),borderSize);
+  borderSize = 4;
+  seedbar = new Menu(3,sf::Vector2f(rectWidth,rectHeight),sf::Vector2i(320-rectWidth/2,480-rectHeight - 65),borderSize);
   seedbar->setButton(0,Button(sprites[5]));//seed
-  seedbar->setButtonPosition(0,180,370);
+  seedbar->setButtonPosition(0,180,305);
   seedbar->setButtonScale(0,2.5,2.5);
   sf::Text t1;
   t1.setFont(font);
@@ -79,11 +83,11 @@ Game::Game(int width, int height, std::string title, std::string location,
   t1.setCharacterSize(20);
   t1.setString(std::to_string(player->getSeeds("Wheat")));
   t1.setOrigin(t1.getLocalBounds().width/2, t1.getLocalBounds().height/2);
-  t1.setPosition(210,460);
+  t1.setPosition(210,395);
   seedbar->setText(0,t1);
 
   seedbar->setButton(1,Button(sprites[5]));//seed
-  seedbar->setButtonPosition(1,300,370);
+  seedbar->setButtonPosition(1,300,305);
   seedbar->setButtonScale(1,2.5,2.5);
   sf::Text t2;
   t2.setFont(font);
@@ -91,11 +95,11 @@ Game::Game(int width, int height, std::string title, std::string location,
   t2.setCharacterSize(20);
   t2.setString(std::to_string(player->getSeeds("Corn")));
   t2.setOrigin(t2.getLocalBounds().width/2, t2.getLocalBounds().height/2);
-  t2.setPosition(330,460);
+  t2.setPosition(330,395);
   seedbar->setText(1,t2);
 
   seedbar->setButton(2,Button(sprites[5]));//seed
-  seedbar->setButtonPosition(2,420,370);
+  seedbar->setButtonPosition(2,420,305);
   seedbar->setButtonScale(2,2.5,2.5);
   sf::Text t3;
   t3.setFont(font);
@@ -103,7 +107,7 @@ Game::Game(int width, int height, std::string title, std::string location,
   t3.setCharacterSize(20);
   t3.setString(std::to_string(player->getSeeds("Beans")));
   t3.setOrigin(t3.getLocalBounds().width/2, t3.getLocalBounds().height/2);
-  t3.setPosition(450,460);
+  t3.setPosition(450,395);
   seedbar->setText(2,t3);
   /* #endregion */
 
@@ -113,21 +117,23 @@ Game::Game(int width, int height, std::string title, std::string location,
   cols = win->getSize().x / 32;
   land = new Land*[rows];
   for (int r = 0; r < rows; r++) {
-    land[r] = new Land[cols];
+    land[r] = new Grassland[cols];
     for (int c = 0; c < cols; c++) {
       // set them all to grass tiles and set the positions of them
       land[r][c].setSprite(sprites[0]);
       land[r][c].setPosition(c,r);
-      land[r][c].setLandType("Grass");
     }
   }
   // place first 2 land tiles
+  Farmland f1;
+  land[rows/2][cols/2] = f1;
   land[rows/2][cols/2].setSprite(sprites[1]);
   land[rows/2][cols/2].setPosition(cols/2, rows/2);
-  land[rows/2][cols/2].setLandType("Land");
+
+  Farmland f2;
+  land[rows/2 +1 ][cols/2 + 1] = f2;
   land[rows/2 +1 ][cols/2 + 1].setSprite(sprites[1]);
   land[rows/2 + 1][cols/2 + 1].setPosition(cols/2 + 1, rows/2 + 1);
-  land[rows/2 + 1][cols/2 + 1].setLandType("Land");
   /* #endregion */
 
 }
@@ -160,16 +166,17 @@ void Game::run() {
           if(toolbar->isInside(mouseX,mouseY)){
             std::cout << "inside Click\n";
 
-            //if user clicks on scythe button
+            //if user clicks on scythe button while toolbar open
             if(toolbar->isClicked(0,mouseX,mouseY)){
               std::cout << "Scythe clicked\n";
-              toolMode = 1;
+              if(toolMode == 1){toolMode = 0;}else{toolMode=1;}
+             
             }
 
             //if user clicks on seed button
             if(toolbar->isClicked(1,mouseX,mouseY)){
               std::cout << "Seeds clicked\n";
-              toolMode = 2;
+              if(toolMode == 2){toolMode = 0;}else{toolMode=2;}
             }
           
           // if user doesn't click on toolbar
@@ -260,7 +267,7 @@ void Game::run() {
     /* #endregion */
 
     //draw toolbar
-    if(toolMode == 0 || toolMode == 1){
+    if(1){//toolMode == 0 || toolMode == 1){
       toolbar->draw(win,false);
     }
     

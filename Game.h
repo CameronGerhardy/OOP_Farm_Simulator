@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Land.h"
 #include "Menu.h"
+#include "Grassland.h"
+#include "Farmland.h"
 
 class Game{
 private:
@@ -23,6 +25,7 @@ private:
   int rows;
 
   int toolMode;// 0-nothing , 1-cut, 2-selectplant, 3-plant,
+  int seedMode;// 0-nothing, 1-wheat, 2-beans, 3-corn
 
   int mouseX;//mouse Coords
   int mouseY;
