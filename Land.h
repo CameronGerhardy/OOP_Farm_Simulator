@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "Player.h"
 
 class Land{
 private:
@@ -18,6 +19,7 @@ public:
   void setLandType(std::string landType);
   std::string getLandType();
 
-  virtual void HarvestCrop(); 
+  virtual void HarvestCrop(Player* p); 
   virtual void PlantCrop(); 
 }; 
+

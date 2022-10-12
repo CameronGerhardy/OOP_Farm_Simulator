@@ -71,15 +71,15 @@ Game::Game(int width, int height, std::string title, std::string location,
   borderSize = 2;
   seedbar = new Menu(3,sf::Vector2f(rectWidth,rectHeight),sf::Vector2i(320-rectWidth/2,480-rectHeight),borderSize);
   seedbar->setButton(0,Button(sprites[5]));//seed
-  seedbar->setButtonPosition(0,200,400);
+  seedbar->setButtonPosition(0,200,330);
   seedbar->setButtonScale(0,2.5,2.5);
 
   seedbar->setButton(1,Button(sprites[5]));//seed
-  seedbar->setButtonPosition(1,300,400);
+  seedbar->setButtonPosition(1,300,330);
   seedbar->setButtonScale(1,2.5,2.5);
 
   seedbar->setButton(2,Button(sprites[5]));//seed
-  seedbar->setButtonPosition(2,400,400);
+  seedbar->setButtonPosition(2,400,330);
   seedbar->setButtonScale(2,2.5,2.5);
   /* #endregion */
 

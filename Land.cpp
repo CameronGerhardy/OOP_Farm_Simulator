@@ -1,5 +1,6 @@
 #include "Land.h"
 #include <SFML/Graphics.hpp>
+#include "Player.h"
 
 Land::Land(sf::Sprite sprite){
   _sprite =sprite;
@@ -33,5 +34,5 @@ std::string Land::getLandType(){
   return _landType;
 }
 
-void Land::HarvestCrop(){}
+void Land::HarvestCrop(Player* P){}
 void Land::PlantCrop(){}
