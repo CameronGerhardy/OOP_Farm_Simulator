@@ -19,8 +19,7 @@ class Bean : public Land{
     public:
         
         
-        Bean();
-
+        std::string getLandType();
         void ImcrementXP(Player* p, int XP);
 
         virtual void HarvestCrop(Player* p); 
