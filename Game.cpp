@@ -194,8 +194,8 @@ void Game::run() {
               if(toolMode == 2){toolMode = 0;}else{toolMode=2;}
             }
           
-          //if user clicks on seedbar
-          }else if(seedbar->isInside(mouseX,mouseY)){
+          //if user clicks on seedbar and its open
+          }else if(seedbar->isInside(mouseX,mouseY) && toolMode == 2){
             //if user clicks on wheat seeds
             if(seedbar->isClicked(0,mouseX,mouseY)){
               toolMode=3;
@@ -215,32 +215,39 @@ void Game::run() {
           }else{
             int TilePosX = mouseX/(win->getSize().x/cols);
             int TilePosY = mouseY/(win->getSize().y/rows);
-            //std::cout << "else, " << "Tool mode: "<<toolMode << "Seedmode: " << seedMode << " , landtype: " << land[TilePosY][TilePosX]->getLandType() <<std::endl;
 
             if(toolMode == 3 && land[TilePosY][TilePosX]->getLandType() == "Farmland"){
               //std::cout << "farmland\n";
-              if(seedMode==1){
+              if(seedMode==1 && player->getSeeds("Wheat") > 0){
                 //std::cout << "wheatcrop\n";
                 delete land[TilePosY][TilePosX];
                 land[TilePosY][TilePosX] = new Wheat;
                 land[TilePosY][TilePosX]->setSprite(sprites[2]);
                 land[TilePosY][TilePosX]->setPosition(TilePosX,TilePosY);
+                player->changeSeeds("Wheat",player->getSeeds("Wheat")-1);
               }
-              if(seedMode==2){
+              if(seedMode==2 && player->getSeeds("Corn") > 0){
                 delete land[TilePosY][TilePosX];
                 land[TilePosY][TilePosX] = new Corn;
-                land[TilePosY][TilePosX]->setSprite(sprites[12]);
+                land[TilePosY][TilePosX]->setSprite(sprites[11]);
                 land[TilePosY][TilePosX]->setPosition(TilePosX,TilePosY);
+                player->changeSeeds("Corn",player->getSeeds("Corn")-1);
               }
-              if(seedMode==3){
+              if(seedMode==3 && player->getSeeds("Beans") > 0){
                 delete land[TilePosY][TilePosX];
                 land[TilePosY][TilePosX] = new Bean;
-                land[TilePosY][TilePosX]->setSprite(sprites[14]);
+                land[TilePosY][TilePosX]->setSprite(sprites[10]);
                 land[TilePosY][TilePosX]->setPosition(TilePosX,TilePosY);
+                player->changeSeeds("Beans",player->getSeeds("Beans")-1);
               }
               
             }
-            
+            //collecting
+            if(toolMode == 1){
+              if(land[TilePosY][TilePosX]->getLandType() == "Wheat Crop"){
+                
+              }
+            }
           }
         }
         //mouse right clicks
@@ -248,20 +255,8 @@ void Game::run() {
           int TilePosX = mouseX/(win->getSize().x/cols);
           int TilePosY = mouseY/(win->getSize().y/rows);
           std::cout << "Tool mode: "<<toolMode << " Seedmode: " << seedMode << " , landtype: " << land[TilePosY][TilePosX]->getLandType() << " Coords X: " << TilePosX << " Y: "<< TilePosY<<std::endl;
-
-          // int mouseX = event.mouseButton.x;
-          // int mouseY = event.mouseButton.y;
-          // int TilePosX = mouseX/(win->getSize().x/cols);
-          // int TilePosY = mouseY/(win->getSize().y/rows);
-          // // std::cout << "the Right button was pressed" << std::endl;
-          // // std::cout << "mouse x: " << mouseX << ", "<< TilePosX << std::endl;
-          // // std::cout << "mouse y: " << mouseY << ", "<< TilePosY << std::endl;
-          // // std::cout << std::endl;
-
-          // player->incremCoins(1);
-
-          // land[TilePosY][TilePosX].setSprite(half_s);
-          // land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
+          toolMode = 0;
+          seedMode = 0;
         }
       
       }
@@ -324,6 +319,9 @@ void Game::run() {
     
     //draw seedbar
     if(toolMode == 2){
+      seedbar->setString(0,to_string(player->getSeeds("Wheat")));
+      seedbar->setString(1,to_string(player->getSeeds("Beans")));
+      seedbar->setString(2,to_string(player->getSeeds("Corn")));
       seedbar->draw(win,true);
     }
     

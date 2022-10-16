@@ -25,6 +25,8 @@ public:
 
   bool isClicked(int index, int mouseX, int mouseY);
   bool isInside(int mouseX, int mouseY);
+
+  void setString(int index, std::string s);
   ~Menu();
 
 };

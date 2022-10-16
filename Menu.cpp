@@ -49,6 +49,10 @@ void Menu::setText(int index, sf::Text t){
   _buttons[index].setText(t);
 }
 
+void Menu::setString(int index, std::string s){
+  _buttons[index].setString(s);
+}
+
 
 // void Menu::setRectSize(int index, sf::Vector2f v){
 //   _rectangles[index].setSize(v);

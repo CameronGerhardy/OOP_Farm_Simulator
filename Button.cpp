@@ -32,3 +32,7 @@ void Button::draw(sf::RenderWindow* win, bool drawText){
 void Button::setSprite(sf::Sprite s){
   _img = s;
 }
+
+void Button::setString(std::string s){
+  _text.setString(s);
+}
