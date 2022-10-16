@@ -1,11 +1,9 @@
 #include "Bean.h"
 #include "Land.h"
 #include "Player.h"
+#include "Timer.h"
 
 
-Bean::Bean(){
-    _landType = "Bean";
-}
 
 void Bean::PlantCrop(Player* p){
     timer.start();
@@ -27,4 +25,9 @@ void Bean::HarvestCrop(Player* p){
         
     }
 }
+
+std::string Bean::getLandType(){
+    return "Bean Crop";
+}
+      
        

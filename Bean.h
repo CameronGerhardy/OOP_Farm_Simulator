@@ -8,7 +8,7 @@
 #define BeanCrop_H
 #include "Land.h"
 #include <string>
-#include "Timer.cpp"
+#include "Timer.h"
 using namespace std;
     
 class Bean : public Land{

@@ -7,12 +7,13 @@
 #include "Menu.h"
 #include "Grassland.h"
 #include "Farmland.h"
+#include "Timer.h"
 
 class Game{
 private:
   sf::RenderWindow* win;
   Player* player;
-  Land** land;
+  Land*** land;
 
   sf::Texture textureFile;
   sf::Sprite* sprites;

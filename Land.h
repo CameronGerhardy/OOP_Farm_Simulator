@@ -22,5 +22,7 @@ public:
   virtual void HarvestCrop(Player* p); 
   virtual void PlantCrop(Player* p); 
 
+  virtual ~Land(){};
+
 }; 
 
