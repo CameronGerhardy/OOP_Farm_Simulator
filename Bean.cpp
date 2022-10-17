@@ -9,7 +9,9 @@
 
 void Bean::PlantCrop(Player* p){
     timer.start();
-    p->changeSeeds("Bean",p->getSeeds("Bean")-1);
+    _growth = 0;
+    int currSeeds = p->getSeeds("Beans");
+    p->changeSeeds("Beans",currSeeds-1);
 
     // square becomes used
 }
@@ -21,7 +23,7 @@ void Bean::IncrementXP(Player* p, int XP){
 void Bean::HarvestCrop(Player* p){
     if(_growth ==2){
 
-        p->changeSeeds("Bean",p->getSeeds("Bean")+2);
+        p->changeSeeds("Beans",p->getSeeds("Beans")+2);
         // square becomes empty 
         IncrementXP(p, 2);
         

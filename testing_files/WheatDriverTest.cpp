@@ -1,9 +1,7 @@
-#include "Menu.h"
-#include "WheatCrop.cpp"
-#include "Land.cpp"
-#include "Land.h"
-#include "Player.h"
-#include "Player.cpp"
+#include "../Menu.h"
+#include "../WheatCrop.h"
+#include "../Land.h"
+#include "../Player.h"
 #include <SFML/Graphics.hpp>
 
 int main()

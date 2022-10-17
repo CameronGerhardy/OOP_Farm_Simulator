@@ -143,8 +143,7 @@ Game::Game(int width, int height, std::string title, std::string location,
   seedbar->setText(2, t3);
   /* #endregion */
 
-  /* #region create 2d array of grass tiles */
-  // create 2d array of grass tiles
+  /* #region title*/
   rows = win->getSize().y / 32;
   cols = win->getSize().x / 32;
   land = new Land**[rows];
@@ -157,7 +156,6 @@ Game::Game(int width, int height, std::string title, std::string location,
       land[r][c]->setPosition(c, r);
     }
   }
-  // place first 2 land tiles
   delete land[rows / 2 + 1][cols / 2 + 1];
   land[rows / 2 + 1][cols / 2 + 1] = new Farmland;
   land[rows / 2 + 1][cols / 2 + 1]->setSprite(sprites[1]);
@@ -167,13 +165,8 @@ Game::Game(int width, int height, std::string title, std::string location,
   land[rows / 2][cols / 2] = new Farmland;
   land[rows / 2][cols / 2]->setSprite(sprites[1]);
   land[rows / 2][cols / 2]->setPosition(cols / 2, rows / 2);
-
-  
-
   }
-  
-
-  /* #endregion */
+  /* #endregion*/
 
 
 void Game::run() {
@@ -192,11 +185,11 @@ void Game::run() {
         if (event.mouseButton.button == sf::Mouse::Left) {
           // if user clicks in toobar
           if (toolbar->isInside(mouseX, mouseY)) {
-            std::cout << "inside Click\n";
+            //std::cout << "inside Click\n";
 
             // if user clicks on scythe button while toolbar open
             if (toolbar->isClicked(0, mouseX, mouseY)) {
-              std::cout << "Scythe clicked\n";
+              //std::cout << "Scythe clicked\n";
               if (toolMode == 1) {
                 toolMode = 0;
               } else {
@@ -206,7 +199,7 @@ void Game::run() {
 
             // if user clicks on seed button
             if (toolbar->isClicked(1, mouseX, mouseY)) {
-              std::cout << "Seeds clicked\n";
+              //std::cout << "Seeds clicked\n";
               if (toolMode == 2) {
                 toolMode = 0;
               } else {
@@ -294,7 +287,7 @@ void Game::run() {
     win->clear();
 
     
-  
+    /* #region add farmland when reaching level*/
     if(player->getXP() == 3){
 
       player->changeSeeds("Corn",2);
@@ -313,7 +306,7 @@ void Game::run() {
 
     if(player->getXP() == 7){
 
-      player->changeSeeds("Bean",2);
+      player->changeSeeds("Beans",2);
 
       delete land[rows / 2 + 1 ][cols / 2 -3];
       land[rows / 2 + 1][cols / 2 -3] = new Farmland;
@@ -326,12 +319,14 @@ void Game::run() {
       land[rows / 2 ][cols / 2 -4]->setPosition(cols / 2 - 4, rows / 2 );
       
     }
+    /* #endregion */
 
 
     ////drawing to the screen///
     ////////////////////////////
 
-    // update land image according to growth
+    /* #region update land image according to growth */
+
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
         land[r][c]->updateGrowth();
@@ -373,7 +368,8 @@ void Game::run() {
         }
       }
     }
-
+    /* #endregion */
+    
     // draw all land objects to the screen
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
@@ -427,8 +423,8 @@ void Game::run() {
     // draw seedbar
     if (toolMode == 2) {
       seedbar->setString(0, to_string(player->getSeeds("Wheat")));
-      seedbar->setString(1, to_string(player->getSeeds("Beans")));
-      seedbar->setString(2, to_string(player->getSeeds("Corn")));
+      seedbar->setString(1, to_string(player->getSeeds("Corn")));
+      seedbar->setString(2, to_string(player->getSeeds("Beans")));
       seedbar->draw(win, true);
     }
 

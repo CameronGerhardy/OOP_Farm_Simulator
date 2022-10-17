@@ -1,11 +1,11 @@
-#include "Timer.cpp"
+#include "../Timer.h"
 
 
 
 #include <iostream>
 int main()
 {
-    Timer t;
+  Timer t;
   t.start();
   std::cout << "Hello, World\n";
   std::cin.ignore();

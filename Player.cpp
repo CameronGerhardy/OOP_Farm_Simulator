@@ -15,9 +15,9 @@ Player::Player(int coins, int xp){
   _maxLand = 3;
   _coins = coins;
   _xp = xp;
-  _seeds.insert({"Wheat",4});
-  _seeds.insert({"Corn",4});
-  _seeds.insert({"Beans",4});
+  _seeds.insert({"Wheat",2});
+  _seeds.insert({"Corn",0});
+  _seeds.insert({"Beans",0});
 }
 
 int Player::getCoins(){

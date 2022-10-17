@@ -9,7 +9,9 @@
 
 void Corn::PlantCrop(Player* p){
     timer.start();
-    p->changeSeeds("Corn",p->getSeeds("Corn")-1);
+    _growth = 0;
+    int currSeeds = p->getSeeds("Corn");
+    p->changeSeeds("Corn",currSeeds-1);
 
     // square becomes used
 }

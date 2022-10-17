@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "../Menu.h"
 #include <SFML/Graphics.hpp>
 
 int main()
@@ -21,11 +21,11 @@ int main()
         window->draw(shape);
 
 
-        Menu menu(1,0);
-        menu.setRectSize(0,sf::Vector2f(50,100));
-        menu.setRectPosition(0,25,25);
-        menu.setRectFillColor(0,sf::Color(70,70,70));
-        menu.draw(window);
+        // Menu menu();
+        // menu.setRectSize(0,sf::Vector2f(50,100));
+        // menu.setRectPosition(0,25,25);
+        // menu.setRectFillColor(0,sf::Color(70,70,70));
+        // menu.draw(window);
 
         window->display();
     }
