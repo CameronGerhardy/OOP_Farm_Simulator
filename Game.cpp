@@ -265,7 +265,36 @@ void Game::run() {
     win->clear();
 
     ////drawing to the screen///
-    ////////////////////////////
+    ////////////////////////////  
+    
+    
+    //update land image according to growth 
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < cols; c++) {
+          land[r][c]->updateGrowth();
+          switch(land[r][c]->getLandType);
+            case "Wheat crop":
+              if(land[r][c].getGrowth == 1){
+                land[r][c]->setSprite(sprites[4]);
+              }else if(land[r][c].getGrowth == 2){
+                 land[r][c]->setSprite(sprites[3]);
+              }
+              break
+            case "Corn crop":
+              if(land[r][c].getGrowth == 1){
+                land[r][c]->setSprite(sprites[13]);
+              }else if(land[r][c].getGrowth == 2){
+                 land[r][c]->setSprite(sprites[12]);
+              }
+              break
+              case "Bean crop":
+              if(land[r][c].getGrowth == 1){
+                land[r][c]->setSprite(sprites[15]);
+              }else if(land[r][c].getGrowth == 2){
+                 land[r][c]->setSprite(sprites[14]);
+              }
+      }
+    }
 
     //draw all land objects to the screen
     for (int r = 0; r < rows; r++) {
@@ -273,6 +302,9 @@ void Game::run() {
         win->draw(land[r][c]->getSprite());
       }
     }
+
+  
+    
 
     /////draw Overlay
     /////////////////

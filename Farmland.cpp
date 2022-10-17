@@ -7,3 +7,7 @@ std::string Farmland::getLandType(){
 }
 
 void Farmland::updateGrowth(){_growth =0;}
+
+Farmland::int get_growth(){
+  return _growth; 
+}

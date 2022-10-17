@@ -10,4 +10,5 @@ public:
   //
   virtual void updateGrowth();
   virtual std::string getLandType();
+  int get_growth();
 };

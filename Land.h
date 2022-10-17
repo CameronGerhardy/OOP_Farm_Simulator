@@ -23,6 +23,12 @@ public:
   virtual void PlantCrop(Player* p); 
 
   virtual ~Land(){};
+  
+  int _growth;
+
+  virtual void updateGrowth();
+  int get_growth();
+};
 
 }; 
 
