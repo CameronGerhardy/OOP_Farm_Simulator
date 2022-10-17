@@ -9,6 +9,7 @@ private:
   int _TilePosY;
 protected:
   sf::Sprite _sprite;
+  int _growth;
 public:
   Land();
   Land(sf::Sprite sprite);
@@ -23,6 +24,11 @@ public:
   virtual void PlantCrop(Player* p); 
 
   virtual ~Land(){};
+  
 
-}; 
+
+  virtual void updateGrowth();
+  int getGrowth();
+};
+
 

@@ -30,9 +30,9 @@ std::string Wheat::getLandType(){
 }
 
 void Wheat::updateGrowth(){
-    if(timer.elapsedSeconds() > 60){
+    if(timer.elapsedSeconds() > 1){
         Farmland::_growth = 1;
-    }else if(timer.elapsedSeconds() > 120){
+    }else if(timer.elapsedSeconds() > 2){
         Farmland::_growth = 2;
         timer.stop();
     }

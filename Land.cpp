@@ -28,6 +28,11 @@ sf::Sprite Land::getSprite(){
 // void Land::setLandType(std::string landType){
 //   _landType = landType;
 // }
+void Land::updateGrowth(){_growth =0;}
+
+int Land::getGrowth(){
+  return _growth; 
+}
 
 void Land::HarvestCrop(Player* p){}
 void Land::PlantCrop(Player* p){}
