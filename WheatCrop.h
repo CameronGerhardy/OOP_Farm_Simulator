@@ -10,9 +10,10 @@
 #include "Land.h"
 #include <string>
 #include "Timer.h"
+#include "Farmland.h"
 using namespace std;
     
-class Wheat : public Land{
+class Wheat : public Farmland{
 
     private: 
         Timer timer;
@@ -24,8 +25,10 @@ class Wheat : public Land{
         
         void IncrementXP(Player* p, int XP);
 
-        virtual void HarvestCrop(Player* p); 
-        virtual void PlantCrop(Player* p); 
+        void HarvestCrop(Player* p); 
+        void PlantCrop(Player* p); 
+
+        void updateGrowth();
 };  
  
 #endif
