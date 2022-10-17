@@ -1,6 +1,7 @@
 #include "Land.h"
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include <iostream>
 
 Land::Land(sf::Sprite sprite){
   _sprite =sprite;
@@ -28,7 +29,10 @@ sf::Sprite Land::getSprite(){
 // void Land::setLandType(std::string landType){
 //   _landType = landType;
 // }
-void Land::updateGrowth(){_growth =0;}
+void Land::updateGrowth(){
+  //std::cout << "Land Growth\n";
+  _growth =0;
+}
 
 int Land::getGrowth(){
   return _growth; 

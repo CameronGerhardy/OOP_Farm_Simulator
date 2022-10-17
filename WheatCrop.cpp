@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Timer.h"
 #include "Farmland.h"
+#include <iostream>
 
 
 void Wheat::PlantCrop(Player* p){
@@ -31,9 +32,10 @@ std::string Wheat::getLandType(){
 
 void Wheat::updateGrowth(){
     if(timer.elapsedSeconds() > 1){
-        Farmland::_growth = 1;
+        _growth = 1;
     }else if(timer.elapsedSeconds() > 2){
-        Farmland::_growth = 2;
+        _growth = 2;
         timer.stop();
     }
+    //std::cout << "Wheat Crop Growth\n";
 }

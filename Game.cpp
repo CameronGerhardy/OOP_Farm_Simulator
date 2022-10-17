@@ -279,7 +279,7 @@ void Game::run() {
                     << " , landtype: "
                     << land[TilePosY][TilePosX]->getLandType()
                     << " Coords X: " << TilePosX << " Y: " << TilePosY
-                    << std::endl;
+                    << " growth: " << land[TilePosY][TilePosX]->getGrowth() << std::endl;
           toolMode = 0;
           seedMode = 0;
         }
@@ -294,7 +294,7 @@ void Game::run() {
     // update land image according to growth
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
-        //land[r][c]->updateGrowth();
+        land[r][c]->updateGrowth();
         if (land[r][c]->getLandType() == "Wheat Crop") {
           if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[4]);
@@ -425,6 +425,9 @@ Game::~Game() {
 
   // delete all the land objects
   for (int r = 0; r < rows; r++) {
+    for(int c =0; c < cols; c++){
+      delete land[r][c];
+    }
     delete[] land[r];
   }
   delete[] land;

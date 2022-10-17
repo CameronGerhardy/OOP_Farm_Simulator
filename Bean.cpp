@@ -2,6 +2,8 @@
 #include "Land.h"
 #include "Player.h"
 #include "Timer.h"
+#include "Farmland.h"
+#include <iostream>
 
 
 
@@ -17,7 +19,7 @@ void Bean::IncrementXP(Player* p, int XP){
 }
 
 void Bean::HarvestCrop(Player* p){
-    if(Farmland::_growth ==2){
+    if(_growth ==2){
         p->changeSeeds("Bean",p->getSeeds("Bean")+2);
         // square becomes empty 
         IncrementXP(p, 2);
@@ -31,10 +33,11 @@ std::string Bean::getLandType(){
 
 void Bean::updateGrowth(){
     if(timer.elapsedSeconds() > 1){
-        Farmland::_growth = 1;
+        _growth = 1;
     }else if(timer.elapsedSeconds() > 2){
-        Farmland::_growth = 2;
+        _growth = 2;
         timer.stop();
     }
+    //std::cout << "Bean crop Growth\n";
 }
        
