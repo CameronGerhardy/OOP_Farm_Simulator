@@ -242,7 +242,6 @@ void Game::run() {
                 land[TilePosY][TilePosX]->setSprite(sprites[2]);
                 land[TilePosY][TilePosX]->setPosition(TilePosX, TilePosY);
                 land[TilePosY][TilePosX]->PlantCrop(player);
-                player->changeSeeds("Wheat", player->getSeeds("Wheat") - 1);
               }
               if (seedMode == 2 && player->getSeeds("Corn") > 0) {
                 delete land[TilePosY][TilePosX];
@@ -250,7 +249,6 @@ void Game::run() {
                 land[TilePosY][TilePosX]->setSprite(sprites[11]);
                 land[TilePosY][TilePosX]->setPosition(TilePosX, TilePosY);
                 land[TilePosY][TilePosX]->PlantCrop(player);
-                player->changeSeeds("Corn", player->getSeeds("Corn") - 1);
               }
               if (seedMode == 3 && player->getSeeds("Beans") > 0) {
                 delete land[TilePosY][TilePosX];
@@ -258,7 +256,6 @@ void Game::run() {
                 land[TilePosY][TilePosX]->setSprite(sprites[10]);
                 land[TilePosY][TilePosX]->setPosition(TilePosX, TilePosY);
                 land[TilePosY][TilePosX]->PlantCrop(player);
-                player->changeSeeds("Beans", player->getSeeds("Beans") - 1);
               }
             }
 
@@ -299,7 +296,10 @@ void Game::run() {
       for (int c = 0; c < cols; c++) {
         land[r][c]->updateGrowth();
         if (land[r][c]->getLandType() == "Wheat Crop") {
-          if (land[r][c]->getGrowth() == 1) {
+          if (land[r][c]->getGrowth() == 0) {
+            land[r][c]->setSprite(sprites[2]);
+            land[r][c]->setPosition(c,r);
+          }else if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[4]);
             land[r][c]->setPosition(c,r);
           } else if (land[r][c]->getGrowth() == 2) {
@@ -308,7 +308,10 @@ void Game::run() {
           }
         }
         if (land[r][c]->getLandType() == "Corn Crop") {
-          if (land[r][c]->getGrowth() == 1) {
+          if (land[r][c]->getGrowth() == 0) {
+            land[r][c]->setSprite(sprites[11]);
+            land[r][c]->setPosition(c,r);
+          }else if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[13]);
             land[r][c]->setPosition(c,r);
           } else if (land[r][c]->getGrowth() == 2) {
@@ -317,7 +320,10 @@ void Game::run() {
           }
         }
         if (land[r][c]->getLandType() == "Bean Crop") {
-          if (land[r][c]->getGrowth() == 1) {
+          if (land[r][c]->getGrowth() == 0) {
+            land[r][c]->setSprite(sprites[10]);
+            land[r][c]->setPosition(c,r);
+          }else if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[15]);
             land[r][c]->setPosition(c,r);
           } else if (land[r][c]->getGrowth() == 2) {

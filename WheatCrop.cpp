@@ -8,7 +8,11 @@
 
 void Wheat::PlantCrop(Player* p){
     timer.start();
-    p->changeSeeds("Wheat",p->getSeeds("Wheat")-1);
+    _growth = 0;
+    int currSeeds = p->getSeeds("Wheat");
+    std::cout <<  p->getSeeds("Wheat") << endl;
+    p->changeSeeds("Wheat",currSeeds-1);
+    std::cout <<  p->getSeeds("Wheat") << endl;
 
     // square becomes used
 }

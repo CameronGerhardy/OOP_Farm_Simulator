@@ -16,8 +16,8 @@ Player::Player(int coins, int xp){
   _coins = coins;
   _xp = xp;
   _seeds.insert({"Wheat",4});
-  _seeds.insert({"Corn",0});
-  _seeds.insert({"Beans",0});
+  _seeds.insert({"Corn",4});
+  _seeds.insert({"Beans",4});
 }
 
 int Player::getCoins(){
