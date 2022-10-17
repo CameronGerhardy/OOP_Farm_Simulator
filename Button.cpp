@@ -28,3 +28,11 @@ void Button::draw(sf::RenderWindow* win, bool drawText){
   if(drawText){win->draw(_text);}
   
 }
+
+void Button::setSprite(sf::Sprite s){
+  _img = s;
+}
+
+void Button::setString(std::string s){
+  _text.setString(s);
+}

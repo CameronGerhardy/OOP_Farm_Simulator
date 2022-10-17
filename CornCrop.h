@@ -8,7 +8,7 @@
 #define CornCrop_H
 #include "Land.h"
 #include <string>
-#include "Timer.cpp"
+#include "Timer.h"
 using namespace std;
     
 class Corn : public Land{
@@ -19,7 +19,7 @@ class Corn : public Land{
     public:
         
         std::string getLandType();
-        void ImcrementXP(Player* p, int XP);
+        void IncrementXP(Player* p, int XP);
 
         virtual void HarvestCrop(Player* p); 
         virtual void PlantCrop(Player* p); 

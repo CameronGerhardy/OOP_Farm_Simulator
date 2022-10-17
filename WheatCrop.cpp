@@ -1,6 +1,7 @@
 #include "WheatCrop.h"
 #include "Land.h"
 #include "Player.h"
+#include "Timer.h"
 
 
 void Wheat::PlantCrop(Player* p){
@@ -12,7 +13,7 @@ void Wheat::PlantCrop(Player* p){
 
 void Wheat::IncrementXP(Player* p, int XP){
         p->incremXP(XP);    
-        }
+}
 
 void Wheat::HarvestCrop(Player* p){
     if(timer.elapsedSeconds() >= 0){

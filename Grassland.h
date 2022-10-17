@@ -5,5 +5,5 @@
 class Grassland : public Land{
 private:
 public:
-  std::string getLandType();
+  virtual std::string getLandType();
 };

@@ -9,13 +9,14 @@
 #define WheatCrop_H
 #include "Land.h"
 #include <string>
-#include "Timer.cpp"
+#include "Timer.h"
 using namespace std;
     
 class Wheat : public Land{
 
     private: 
         Timer timer;
+
 
     public:
 
@@ -25,7 +26,6 @@ class Wheat : public Land{
 
         virtual void HarvestCrop(Player* p); 
         virtual void PlantCrop(Player* p); 
-         
 };  
  
 #endif

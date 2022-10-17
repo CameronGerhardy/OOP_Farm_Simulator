@@ -4,6 +4,10 @@
 #include "Land.h"
 #include "Grassland.h"
 #include "Farmland.h"
+#include "WheatCrop.h"
+#include "CornCrop.h"
+#include "Bean.h"
+#include "Timer.h"
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -35,8 +39,8 @@ Game::Game(int width, int height, std::string title, std::string location,
 
   /* #region convert texture to individual sprites*/
   // convert texture to individual sprites
-  sprites = new sf::Sprite[8];
-  for(int i = 0; i < 8; i++){
+  sprites = new sf::Sprite[16];
+  for(int i = 0; i < 16; i++){
     sprites[i].setTexture(textureFile);
   }
   sprites[0].setTextureRect(sf::IntRect(0,0,32,32));//grass texture
@@ -52,6 +56,22 @@ Game::Game(int width, int height, std::string title, std::string location,
   sprites[5].setTextureRect(sf::IntRect(0,32,32,32));//seed icon texture
   sprites[6].setTextureRect(sf::IntRect(32,32,32,32));//coin texture
   sprites[7].setTextureRect(sf::IntRect(0,64,32,32));//scythe texture
+  sprites[8].setTextureRect(sf::IntRect(32,64,32,32));//bean seed texture
+  sprites[9].setTextureRect(sf::IntRect(32,96,32,32));//corn seed texture
+  sprites[10].setTextureRect(sf::IntRect(64,32,32,32));//bean seeded texture
+  sprites[11].setTextureRect(sf::IntRect(64,64,32,32));//corn seeded texture
+
+  sprites[12].setTextureRect(sf::IntRect(128,0,32,64));//corn fully texture
+  sprites[12].setOrigin(0,32);
+
+  sprites[13].setTextureRect(sf::IntRect(128,64,32,64));//corn half texture
+  sprites[13].setOrigin(0,32);
+
+  sprites[14].setTextureRect(sf::IntRect(160,0,32,64));//bean fully texture
+  sprites[14].setOrigin(0,32);
+
+  sprites[15].setTextureRect(sf::IntRect(160,64,32,64));//bean half texture
+  sprites[15].setOrigin(0,32);
   /* #endregion */
 
   /* #region setup toolbar*/
@@ -74,7 +94,7 @@ Game::Game(int width, int height, std::string title, std::string location,
   rectHeight = 150;
   borderSize = 4;
   seedbar = new Menu(3,sf::Vector2f(rectWidth,rectHeight),sf::Vector2i(320-rectWidth/2,480-rectHeight - 65),borderSize);
-  seedbar->setButton(0,Button(sprites[5]));//seed
+  seedbar->setButton(0,Button(sprites[5]));//Wheat seeds
   seedbar->setButtonPosition(0,180,305);
   seedbar->setButtonScale(0,2.5,2.5);
   sf::Text t1;
@@ -86,7 +106,7 @@ Game::Game(int width, int height, std::string title, std::string location,
   t1.setPosition(210,395);
   seedbar->setText(0,t1);
 
-  seedbar->setButton(1,Button(sprites[5]));//seed
+  seedbar->setButton(1,Button(sprites[9]));// Corn seed
   seedbar->setButtonPosition(1,300,305);
   seedbar->setButtonScale(1,2.5,2.5);
   sf::Text t2;
@@ -98,7 +118,7 @@ Game::Game(int width, int height, std::string title, std::string location,
   t2.setPosition(330,395);
   seedbar->setText(1,t2);
 
-  seedbar->setButton(2,Button(sprites[5]));//seed
+  seedbar->setButton(2,Button(sprites[8]));//Bean seed
   seedbar->setButtonPosition(2,420,305);
   seedbar->setButtonScale(2,2.5,2.5);
   sf::Text t3;
@@ -115,38 +135,33 @@ Game::Game(int width, int height, std::string title, std::string location,
   // create 2d array of grass tiles
   rows = win->getSize().y / 32;
   cols = win->getSize().x / 32;
-  land = new Land*[rows];
+  land = new Land**[rows];
   for (int r = 0; r < rows; r++) {
-    land[r] = new Grassland[cols];
+    land[r] = new Land*[cols];
     for (int c = 0; c < cols; c++) {
       // set them all to grass tiles and set the positions of them
-      land[r][c].setSprite(sprites[0]);
-      land[r][c].setPosition(c,r);
+      land[r][c] = new Grassland();
+      land[r][c]->setSprite(sprites[0]);
+      land[r][c]->setPosition(c,r);
     }
   }
   // place first 2 land tiles
-  Farmland f1;
-  land[rows/2][cols/2] = f1;
-  land[rows/2][cols/2].setSprite(sprites[1]);
-  land[rows/2][cols/2].setPosition(cols/2, rows/2);
+  delete land[rows/2 + 1][cols/2 + 1];
+  land[rows/2 + 1][cols/2 + 1] = new Farmland;
+  land[rows/2 + 1][cols/2 + 1]->setSprite(sprites[1]);
+  land[rows/2 + 1][cols/2 + 1]->setPosition(cols/2 + 1, rows/2 + 1);
 
-  Farmland f2;
-  land[rows/2 +1 ][cols/2 + 1] = f2;
-  land[rows/2 +1 ][cols/2 + 1].setSprite(sprites[1]);
-  land[rows/2 + 1][cols/2 + 1].setPosition(cols/2 + 1, rows/2 + 1);
+  delete land[rows/2][cols/2];
+  land[rows/2][cols/2] = new Farmland;
+  land[rows/2][cols/2]->setSprite(sprites[1]);
+  land[rows/2][cols/2]->setPosition(cols/2, rows/2);
+
+
   /* #endregion */
 
 }
 
 void Game::run() {
-  sf::Sprite fully_s;
-  fully_s = sprites[3];
-
-  sf::Sprite half_s;
-  half_s = sprites[4];
-
-  sf::Sprite seed_s;
-  seed_s = sprites[2];
 
 
   while (win->isOpen()) {
@@ -179,38 +194,69 @@ void Game::run() {
               if(toolMode == 2){toolMode = 0;}else{toolMode=2;}
             }
           
+          //if user clicks on seedbar and its open
+          }else if(seedbar->isInside(mouseX,mouseY) && toolMode == 2){
+            //if user clicks on wheat seeds
+            if(seedbar->isClicked(0,mouseX,mouseY)){
+              toolMode=3;
+              seedMode = 1;
+            }
+            //if user clicks on corn seeds
+            if(seedbar->isClicked(1,mouseX,mouseY)){
+              toolMode=3;
+              seedMode = 2;
+            }
+            //if user clicks on bean seeds
+            if(seedbar->isClicked(2,mouseX,mouseY)){
+              toolMode=3;
+              seedMode =3;
+            }
           // if user doesn't click on toolbar
           }else{
             int TilePosX = mouseX/(win->getSize().x/cols);
             int TilePosY = mouseY/(win->getSize().y/rows);
-            if(toolMode == 1 && land[TilePosY][TilePosX].getLandType() == "Land"){
-              
-              // std::cout << "the Left button was pressed" << std::endl;
-              // std::cout << "mouse x: " << mouseX << ", "<< TilePosX << std::endl;
-              // std::cout << "mouse y: " << mouseY << ", "<< TilePosY << std::endl;
-              // std::cout << std::endl;
 
-              land[TilePosY][TilePosX].setSprite(seed_s);
-              land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
+            if(toolMode == 3 && land[TilePosY][TilePosX]->getLandType() == "Farmland"){
+              //std::cout << "farmland\n";
+              if(seedMode==1 && player->getSeeds("Wheat") > 0){
+                //std::cout << "wheatcrop\n";
+                delete land[TilePosY][TilePosX];
+                land[TilePosY][TilePosX] = new Wheat;
+                land[TilePosY][TilePosX]->setSprite(sprites[2]);
+                land[TilePosY][TilePosX]->setPosition(TilePosX,TilePosY);
+                player->changeSeeds("Wheat",player->getSeeds("Wheat")-1);
+              }
+              if(seedMode==2 && player->getSeeds("Corn") > 0){
+                delete land[TilePosY][TilePosX];
+                land[TilePosY][TilePosX] = new Corn;
+                land[TilePosY][TilePosX]->setSprite(sprites[11]);
+                land[TilePosY][TilePosX]->setPosition(TilePosX,TilePosY);
+                player->changeSeeds("Corn",player->getSeeds("Corn")-1);
+              }
+              if(seedMode==3 && player->getSeeds("Beans") > 0){
+                delete land[TilePosY][TilePosX];
+                land[TilePosY][TilePosX] = new Bean;
+                land[TilePosY][TilePosX]->setSprite(sprites[10]);
+                land[TilePosY][TilePosX]->setPosition(TilePosX,TilePosY);
+                player->changeSeeds("Beans",player->getSeeds("Beans")-1);
+              }
+              
             }
-            
+            //collecting
+            if(toolMode == 1){
+              if(land[TilePosY][TilePosX]->getLandType() == "Wheat Crop"){
+                
+              }
+            }
           }
         }
-        // mouse right clicks
+        //mouse right clicks
         if (event.mouseButton.button == sf::Mouse::Right) {
-          int mouseX = event.mouseButton.x;
-          int mouseY = event.mouseButton.y;
           int TilePosX = mouseX/(win->getSize().x/cols);
           int TilePosY = mouseY/(win->getSize().y/rows);
-          // std::cout << "the Right button was pressed" << std::endl;
-          // std::cout << "mouse x: " << mouseX << ", "<< TilePosX << std::endl;
-          // std::cout << "mouse y: " << mouseY << ", "<< TilePosY << std::endl;
-          // std::cout << std::endl;
-
-          player->incremCoins(1);
-
-          land[TilePosY][TilePosX].setSprite(half_s);
-          land[TilePosY][TilePosX].setPosition(TilePosX,TilePosY);
+          std::cout << "Tool mode: "<<toolMode << " Seedmode: " << seedMode << " , landtype: " << land[TilePosY][TilePosX]->getLandType() << " Coords X: " << TilePosX << " Y: "<< TilePosY<<std::endl;
+          toolMode = 0;
+          seedMode = 0;
         }
       
       }
@@ -224,7 +270,7 @@ void Game::run() {
     //draw all land objects to the screen
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
-        win->draw(land[r][c].getSprite());
+        win->draw(land[r][c]->getSprite());
       }
     }
 
@@ -273,6 +319,9 @@ void Game::run() {
     
     //draw seedbar
     if(toolMode == 2){
+      seedbar->setString(0,to_string(player->getSeeds("Wheat")));
+      seedbar->setString(1,to_string(player->getSeeds("Beans")));
+      seedbar->setString(2,to_string(player->getSeeds("Corn")));
       seedbar->draw(win,true);
     }
     
@@ -285,6 +334,27 @@ void Game::run() {
       //scythe.setPosition(mouseX,mouseY);
     }else{scythe.setPosition(0,0);}
     win->draw(scythe);
+    /* #endregion */
+
+    /* #region seed overlay */
+    Sprite seed;
+    if(toolMode == 3){
+      switch(seedMode){
+        case 1:
+          seed = sprites[5];
+          break;
+        case 2:
+          seed = sprites[9];
+          break;
+          case 3:
+          seed = sprites[8];
+          break;
+        default:
+          break;
+      }
+    seed.setPosition(Mouse::getPosition(*win).x,Mouse::getPosition(*win).y);
+    }else{seed.setPosition(608,0);}
+    win->draw(seed);
     /* #endregion */
 
     ////////////////////////////
@@ -304,5 +374,8 @@ Game::~Game() {
   delete[] land;
 
   delete[] sprites;
+
+  delete toolbar;
+  delete seedbar;
   delete win;
 }

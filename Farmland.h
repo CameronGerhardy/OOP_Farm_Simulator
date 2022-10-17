@@ -4,6 +4,7 @@
 
 class Farmland : public Land{
 private:
+  int _growth = 0;
 public:
-  std::string getLandType();
+  virtual std::string getLandType();
 };
