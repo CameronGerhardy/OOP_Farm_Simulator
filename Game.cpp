@@ -216,6 +216,7 @@ void Game::run() {
             int TilePosX = mouseX/(win->getSize().x/cols);
             int TilePosY = mouseY/(win->getSize().y/rows);
 
+            //if planting
             if(toolMode == 3 && land[TilePosY][TilePosX]->getLandType() == "Farmland"){
               //std::cout << "farmland\n";
               if(seedMode==1 && player->getSeeds("Wheat") > 0){
@@ -242,10 +243,15 @@ void Game::run() {
               }
               
             }
-            //collecting
+            
+            //harvesting
             if(toolMode == 1){
-              if(land[TilePosY][TilePosX]->getLandType() == "Wheat Crop"){
-                
+              land[TilePosY][TilePosX]->HarvestCrop(player);
+              if(land[TilePosY][TilePosX]->get_growth() == 2){
+                delete land[TilePosY][TilePosX];
+                land[TilePosY][TilePosX] = new Farmland;
+                land[TilePosY][TilePosX]->setPosition(TilePosX,TilePosY);
+                land[TilePosY][TilePosX]->setSprite(sprites[1]);
               }
             }
           }
@@ -266,6 +272,13 @@ void Game::run() {
 
     ////drawing to the screen///
     ////////////////////////////
+    switch(){
+      case "Wheat crop":
+        if(land[][].getGrowth == 1){
+          land[][].setSprite(sprites[2])
+        }else if
+      case "C"
+    }
 
     //draw all land objects to the screen
     for (int r = 0; r < rows; r++) {
