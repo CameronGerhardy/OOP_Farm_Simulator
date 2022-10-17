@@ -12,7 +12,7 @@
 #include "Menu.h"
 #include "Timer.h"
 #include "WheatCrop.h"
-//#include "Player.h"
+#include "Player.h"
 
 using namespace sf;
 Game::Game(int width, int height, std::string title, std::string location,
@@ -168,8 +168,13 @@ Game::Game(int width, int height, std::string title, std::string location,
   land[rows / 2][cols / 2]->setSprite(sprites[1]);
   land[rows / 2][cols / 2]->setPosition(cols / 2, rows / 2);
 
+  
+
+  }
+  
+
   /* #endregion */
-}
+
 
 void Game::run() {
   while (win->isOpen()) {
@@ -287,6 +292,24 @@ void Game::run() {
     }
     // clear the window
     win->clear();
+
+    
+  
+    if(player->getXP() == 3){
+
+      player->changeSeeds("Corn",2);
+
+      delete land[rows / 2 + 1][cols / 2 - 1];
+      land[rows / 2 + 1][cols / 2 - 1] = new Farmland;
+      land[rows / 2 + 1][cols / 2 - 1]->setSprite(sprites[1]);
+      land[rows / 2 + 1][cols / 2 - 1]->setPosition(cols / 2 - 1, rows / 2 + 1);
+
+      delete land[rows / 2 ][cols / 2 - 2];
+      land[rows / 2 ][cols / 2 - 2] = new Farmland;
+      land[rows / 2 ][cols / 2 - 2]->setSprite(sprites[1]);
+      land[rows / 2 ][cols / 2 - 2]->setPosition(cols / 2 - 2, rows / 2 );
+      
+    }
 
     ////drawing to the screen///
     ////////////////////////////
