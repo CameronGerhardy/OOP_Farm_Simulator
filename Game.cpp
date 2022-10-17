@@ -311,6 +311,23 @@ void Game::run() {
       
     }
 
+    if(player->getXP() == 7){
+
+      player->changeSeeds("Bean",2);
+
+      delete land[rows / 2 + 1 ][cols / 2 -3];
+      land[rows / 2 + 1][cols / 2 -3] = new Farmland;
+      land[rows / 2 + 1][cols / 2 -3]->setSprite(sprites[1]);
+      land[rows / 2 + 1][cols / 2 -3]->setPosition(cols / 2 -3 , rows / 2 +1);
+
+      delete land[rows / 2 ][cols / 2 - 4];
+      land[rows / 2][cols / 2 - 4] = new Farmland;
+      land[rows / 2 ][cols / 2 -4]->setSprite(sprites[1]);
+      land[rows / 2 ][cols / 2 -4]->setPosition(cols / 2 - 4, rows / 2 );
+      
+    }
+
+
     ////drawing to the screen///
     ////////////////////////////
 
