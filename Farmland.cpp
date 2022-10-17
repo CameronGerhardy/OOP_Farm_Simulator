@@ -5,3 +5,5 @@
 std::string Farmland::getLandType(){
   return "Farmland";
 }
+
+void Farmland::updateGrowth(){_growth =0;}
