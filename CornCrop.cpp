@@ -12,14 +12,12 @@ void Corn::PlantCrop(Player* p){
     // square becomes used
 }
 
-
-
 void Corn::IncrementXP(Player* p, int XP){
         p->incremXP(XP);    
-        }
+}
 
 void Corn::HarvestCrop(Player* p){
-    if(timer.elapsedSeconds() >= 240){
+    if(Farmland::_growth ==2){
         p->changeSeeds("Corn",p->getSeeds("Corn")+2);
         // square becomes empty 
         IncrementXP(p, 2);
@@ -30,6 +28,13 @@ void Corn::HarvestCrop(Player* p){
 std::string Corn::getLandType(){
     return "Corn Crop";
 }
-      
 
+void Corn::updateGrowth(){
+    if(timer.elapsedSeconds() > 1){
+        Farmland::_growth = 1;
+    }else if(timer.elapsedSeconds() > 2){
+        Farmland::_growth = 2;
+        timer.stop();
+    }
+}
        

@@ -11,20 +11,23 @@
 #include "Timer.h"
 using namespace std;
     
-class Bean : public Land{
+    
+class Bean : public Farmland{
 
     private: 
         Timer timer;
 
-    public:
-        
-        
-        std::string getLandType();
-        void ImcrementXP(Player* p, int XP);
 
-        virtual void HarvestCrop(Player* p); 
-        virtual void PlantCrop(Player* p); 
-         
+    public:
+
+        std::string getLandType();
+        
+        void IncrementXP(Player* p, int XP);
+
+        void HarvestCrop(Player* p); 
+        void PlantCrop(Player* p); 
+
+        void updateGrowth();
 };  
  
 #endif
