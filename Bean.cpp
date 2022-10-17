@@ -20,6 +20,7 @@ void Bean::IncrementXP(Player* p, int XP){
 
 void Bean::HarvestCrop(Player* p){
     if(_growth ==2){
+
         p->changeSeeds("Bean",p->getSeeds("Bean")+2);
         // square becomes empty 
         IncrementXP(p, 2);
@@ -34,7 +35,7 @@ std::string Bean::getLandType(){
 void Bean::updateGrowth(){
     if(timer.elapsedSeconds() > 1){
         _growth = 1;
-    }else if(timer.elapsedSeconds() > 2){
+    }if(timer.elapsedSeconds() > 2){
         _growth = 2;
         timer.stop();
     }

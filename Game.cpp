@@ -241,6 +241,7 @@ void Game::run() {
                 land[TilePosY][TilePosX] = new Wheat;
                 land[TilePosY][TilePosX]->setSprite(sprites[2]);
                 land[TilePosY][TilePosX]->setPosition(TilePosX, TilePosY);
+                land[TilePosY][TilePosX]->PlantCrop(player);
                 player->changeSeeds("Wheat", player->getSeeds("Wheat") - 1);
               }
               if (seedMode == 2 && player->getSeeds("Corn") > 0) {
@@ -248,6 +249,7 @@ void Game::run() {
                 land[TilePosY][TilePosX] = new Corn;
                 land[TilePosY][TilePosX]->setSprite(sprites[11]);
                 land[TilePosY][TilePosX]->setPosition(TilePosX, TilePosY);
+                land[TilePosY][TilePosX]->PlantCrop(player);
                 player->changeSeeds("Corn", player->getSeeds("Corn") - 1);
               }
               if (seedMode == 3 && player->getSeeds("Beans") > 0) {
@@ -255,6 +257,7 @@ void Game::run() {
                 land[TilePosY][TilePosX] = new Bean;
                 land[TilePosY][TilePosX]->setSprite(sprites[10]);
                 land[TilePosY][TilePosX]->setPosition(TilePosX, TilePosY);
+                land[TilePosY][TilePosX]->PlantCrop(player);
                 player->changeSeeds("Beans", player->getSeeds("Beans") - 1);
               }
             }
@@ -265,8 +268,8 @@ void Game::run() {
               if (land[TilePosY][TilePosX]->getGrowth() == 2) {
                 delete land[TilePosY][TilePosX];
                 land[TilePosY][TilePosX] = new Farmland;
-                land[TilePosY][TilePosX]->setPosition(TilePosX, TilePosY);
                 land[TilePosY][TilePosX]->setSprite(sprites[1]);
+                land[TilePosY][TilePosX]->setPosition(TilePosX, TilePosY);
               }
             }
           }
@@ -298,22 +301,28 @@ void Game::run() {
         if (land[r][c]->getLandType() == "Wheat Crop") {
           if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[4]);
+            land[r][c]->setPosition(c,r);
           } else if (land[r][c]->getGrowth() == 2) {
             land[r][c]->setSprite(sprites[3]);
+            land[r][c]->setPosition(c,r);
           }
         }
         if (land[r][c]->getLandType() == "Corn Crop") {
           if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[13]);
+            land[r][c]->setPosition(c,r);
           } else if (land[r][c]->getGrowth() == 2) {
             land[r][c]->setSprite(sprites[12]);
+            land[r][c]->setPosition(c,r);
           }
         }
         if (land[r][c]->getLandType() == "Bean Crop") {
           if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[15]);
+            land[r][c]->setPosition(c,r);
           } else if (land[r][c]->getGrowth() == 2) {
             land[r][c]->setSprite(sprites[14]);
+            land[r][c]->setPosition(c,r);
           }
         }
       }

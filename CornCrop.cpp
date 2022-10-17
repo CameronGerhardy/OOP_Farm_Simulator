@@ -34,7 +34,7 @@ std::string Corn::getLandType(){
 void Corn::updateGrowth(){
     if(timer.elapsedSeconds() > 1){
         _growth = 1;
-    }else if(timer.elapsedSeconds() > 2){
+    }if(timer.elapsedSeconds() > 2){
         _growth = 2;
         timer.stop();
     }
