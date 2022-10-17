@@ -17,7 +17,6 @@ int main()
         window->draw(shape);
 
         Wheat w;
-        Land l;
         Player p(3,4);
 
         w.PlantCrop(&p);
