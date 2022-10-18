@@ -31,6 +31,13 @@ private:
   int mouseX;//mouse Coords
   int mouseY;
 
+  bool checkpoints[4];
+
+  //save player stats to file
+  void save(Player* p);
+  //load player stats to file
+  void load(Player* p);
+
 public:
   Game(int width,int height,
      std::string title,std::string location, int sizeX, int sizeY);

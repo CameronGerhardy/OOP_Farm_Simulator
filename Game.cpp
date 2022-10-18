@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include <iostream>
 
 #include "Bean.h"
@@ -10,9 +11,9 @@
 #include "Grassland.h"
 #include "Land.h"
 #include "Menu.h"
+#include "Player.h"
 #include "Timer.h"
 #include "WheatCrop.h"
-#include "Player.h"
 
 using namespace sf;
 Game::Game(int width, int height, std::string title, std::string location,
@@ -26,6 +27,14 @@ Game::Game(int width, int height, std::string title, std::string location,
   // set toolMode and seedMode
   toolMode = 0;
   seedMode = 0;
+
+  // set up checkpoints array
+  for(int i = 0; i < 4; i++){
+    checkpoints[i] = false;
+  }
+
+  //load stats from player
+  load(player);
 
   // setup font
   if (!font.loadFromFile("SHOWG.TTF")) {
@@ -143,7 +152,7 @@ Game::Game(int width, int height, std::string title, std::string location,
   seedbar->setText(2, t3);
   /* #endregion */
 
-  /* #region title*/
+  /* #region setup grassland and first two tiles*/
   rows = win->getSize().y / 32;
   cols = win->getSize().x / 32;
   land = new Land**[rows];
@@ -165,9 +174,9 @@ Game::Game(int width, int height, std::string title, std::string location,
   land[rows / 2][cols / 2] = new Farmland;
   land[rows / 2][cols / 2]->setSprite(sprites[1]);
   land[rows / 2][cols / 2]->setPosition(cols / 2, rows / 2);
-  }
   /* #endregion*/
-
+}
+  
 
 void Game::run() {
   while (win->isOpen()) {
@@ -185,11 +194,11 @@ void Game::run() {
         if (event.mouseButton.button == sf::Mouse::Left) {
           // if user clicks in toobar
           if (toolbar->isInside(mouseX, mouseY)) {
-            //std::cout << "inside Click\n";
+            // std::cout << "inside Click\n";
 
             // if user clicks on scythe button while toolbar open
             if (toolbar->isClicked(0, mouseX, mouseY)) {
-              //std::cout << "Scythe clicked\n";
+              // std::cout << "Scythe clicked\n";
               if (toolMode == 1) {
                 toolMode = 0;
               } else {
@@ -199,7 +208,7 @@ void Game::run() {
 
             // if user clicks on seed button
             if (toolbar->isClicked(1, mouseX, mouseY)) {
-              //std::cout << "Seeds clicked\n";
+              // std::cout << "Seeds clicked\n";
               if (toolMode == 2) {
                 toolMode = 0;
               } else {
@@ -277,7 +286,8 @@ void Game::run() {
                     << " , landtype: "
                     << land[TilePosY][TilePosX]->getLandType()
                     << " Coords X: " << TilePosX << " Y: " << TilePosY
-                    << " growth: " << land[TilePosY][TilePosX]->getGrowth() << std::endl;
+                    << " growth: " << land[TilePosY][TilePosX]->getGrowth()
+                    << std::endl;
           toolMode = 0;
           seedMode = 0;
         }
@@ -286,41 +296,51 @@ void Game::run() {
     // clear the window
     win->clear();
 
-    
     /* #region add farmland when reaching level*/
-    if(player->getXP() == 3){
-
-      player->changeSeeds("Corn",2);
+    if (player->getXP() >= 3 && checkpoints[0] == false) {
+      checkpoints[0] = true;
+      player->changeSeeds("Corn", 2);
 
       delete land[rows / 2 + 1][cols / 2 - 1];
       land[rows / 2 + 1][cols / 2 - 1] = new Farmland;
       land[rows / 2 + 1][cols / 2 - 1]->setSprite(sprites[1]);
       land[rows / 2 + 1][cols / 2 - 1]->setPosition(cols / 2 - 1, rows / 2 + 1);
 
-      delete land[rows / 2 ][cols / 2 - 2];
-      land[rows / 2 ][cols / 2 - 2] = new Farmland;
-      land[rows / 2 ][cols / 2 - 2]->setSprite(sprites[1]);
-      land[rows / 2 ][cols / 2 - 2]->setPosition(cols / 2 - 2, rows / 2 );
-      
+      delete land[rows / 2][cols / 2 - 2];
+      land[rows / 2][cols / 2 - 2] = new Farmland;
+      land[rows / 2][cols / 2 - 2]->setSprite(sprites[1]);
+      land[rows / 2][cols / 2 - 2]->setPosition(cols / 2 - 2, rows / 2);
     }
 
-    if(player->getXP() == 7){
+    if (player->getXP() >= 7 && checkpoints[1] == false) {
+      checkpoints[1] = true;
+      player->changeSeeds("Beans", 2);
 
-      player->changeSeeds("Beans",2);
+      delete land[rows / 2 + 1][cols / 2 - 3];
+      land[rows / 2 + 1][cols / 2 - 3] = new Farmland;
+      land[rows / 2 + 1][cols / 2 - 3]->setSprite(sprites[1]);
+      land[rows / 2 + 1][cols / 2 - 3]->setPosition(cols / 2 - 3, rows / 2 + 1);
 
-      delete land[rows / 2 + 1 ][cols / 2 -3];
-      land[rows / 2 + 1][cols / 2 -3] = new Farmland;
-      land[rows / 2 + 1][cols / 2 -3]->setSprite(sprites[1]);
-      land[rows / 2 + 1][cols / 2 -3]->setPosition(cols / 2 -3 , rows / 2 +1);
-
-      delete land[rows / 2 ][cols / 2 - 4];
+      delete land[rows / 2][cols / 2 - 4];
       land[rows / 2][cols / 2 - 4] = new Farmland;
-      land[rows / 2 ][cols / 2 -4]->setSprite(sprites[1]);
-      land[rows / 2 ][cols / 2 -4]->setPosition(cols / 2 - 4, rows / 2 );
-      
+      land[rows / 2][cols / 2 - 4]->setSprite(sprites[1]);
+      land[rows / 2][cols / 2 - 4]->setPosition(cols / 2 - 4, rows / 2);
+    }
+
+    if (player->getXP() >= 15 && checkpoints[2] == false) {
+      checkpoints[2] = true;
+
+      delete land[rows / 2][cols / 2 + 2];
+      land[rows / 2][cols / 2 + 2] = new Farmland;
+      land[rows / 2][cols / 2 + 2]->setSprite(sprites[1]);
+      land[rows / 2][cols / 2 + 2]->setPosition(cols / 2 + 2, rows / 2 );
+
+      delete land[rows / 2 + 1][cols / 2 +3];
+      land[rows / 2 +1][cols / 2 + 3] = new Farmland;
+      land[rows / 2 +1][cols / 2 + 3]->setSprite(sprites[1]);
+      land[rows / 2 +1][cols / 2 + 3]->setPosition(cols / 2 + 3, rows / 2 +1);
     }
     /* #endregion */
-
 
     ////drawing to the screen///
     ////////////////////////////
@@ -333,43 +353,43 @@ void Game::run() {
         if (land[r][c]->getLandType() == "Wheat Crop") {
           if (land[r][c]->getGrowth() == 0) {
             land[r][c]->setSprite(sprites[2]);
-            land[r][c]->setPosition(c,r);
-          }else if (land[r][c]->getGrowth() == 1) {
+            land[r][c]->setPosition(c, r);
+          } else if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[4]);
-            land[r][c]->setPosition(c,r);
+            land[r][c]->setPosition(c, r);
           } else if (land[r][c]->getGrowth() == 2) {
             land[r][c]->setSprite(sprites[3]);
-            land[r][c]->setPosition(c,r);
+            land[r][c]->setPosition(c, r);
           }
         }
         if (land[r][c]->getLandType() == "Corn Crop") {
           if (land[r][c]->getGrowth() == 0) {
             land[r][c]->setSprite(sprites[11]);
-            land[r][c]->setPosition(c,r);
-          }else if (land[r][c]->getGrowth() == 1) {
+            land[r][c]->setPosition(c, r);
+          } else if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[13]);
-            land[r][c]->setPosition(c,r);
+            land[r][c]->setPosition(c, r);
           } else if (land[r][c]->getGrowth() == 2) {
             land[r][c]->setSprite(sprites[12]);
-            land[r][c]->setPosition(c,r);
+            land[r][c]->setPosition(c, r);
           }
         }
         if (land[r][c]->getLandType() == "Bean Crop") {
           if (land[r][c]->getGrowth() == 0) {
             land[r][c]->setSprite(sprites[10]);
-            land[r][c]->setPosition(c,r);
-          }else if (land[r][c]->getGrowth() == 1) {
+            land[r][c]->setPosition(c, r);
+          } else if (land[r][c]->getGrowth() == 1) {
             land[r][c]->setSprite(sprites[15]);
-            land[r][c]->setPosition(c,r);
+            land[r][c]->setPosition(c, r);
           } else if (land[r][c]->getGrowth() == 2) {
             land[r][c]->setSprite(sprites[14]);
-            land[r][c]->setPosition(c,r);
+            land[r][c]->setPosition(c, r);
           }
         }
       }
     }
     /* #endregion */
-    
+
     // draw all land objects to the screen
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
@@ -472,11 +492,13 @@ void Game::run() {
 }
 
 Game::~Game() {
+  save(player);
+
   delete player;
 
   // delete all the land objects
   for (int r = 0; r < rows; r++) {
-    for(int c =0; c < cols; c++){
+    for (int c = 0; c < cols; c++) {
       delete land[r][c];
     }
     delete[] land[r];
@@ -488,4 +510,35 @@ Game::~Game() {
   delete toolbar;
   delete seedbar;
   delete win;
+}
+
+void Game::save(Player* p) {
+  ofstream file("Save.txt");
+  file << p->getXP() << endl;
+  file << p->getCoins() << endl;
+  file << p->getSeeds("Wheat") << endl;
+  file << p->getSeeds("Corn") << endl;
+  file << p->getSeeds("Beans") << endl;
+}
+
+void Game::load(Player* p) {
+  ifstream loadFile("Save.txt");
+
+  string XpString;
+  string CoinString;
+  string WheatString;
+  string CornString;
+  string BeansString;
+
+  getline(loadFile, XpString);
+  getline(loadFile, CoinString);
+  getline(loadFile, WheatString);
+  getline(loadFile, CornString);
+  getline(loadFile, BeansString);
+
+  p->setXP(stoi(XpString));
+  p->setCoins(stoi(CoinString));
+  p->changeSeeds("Wheat", stoi(WheatString));
+  p->changeSeeds("Corn", stoi(CornString));
+  p->changeSeeds("Beans", stoi(BeansString));
 }

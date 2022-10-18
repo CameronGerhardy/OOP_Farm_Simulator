@@ -3,7 +3,7 @@ list = $(dest)Player.o $(dest)Game.o $(dest)Land.o $(dest)Menu.o $(dest)Button.o
 sfml =  -lsfml-graphics -lsfml-window -lsfml-system
 
 dest2 = testing_files/
-test = $(dest2)MenuDriverTest.out $(dest2)TimerDriverTest.out $(dest2)WheatDriverTest.out
+test = $(dest2)MenuDriverTest.out $(dest2)TimerDriverTest.out $(dest2)WheatDriverTest.out $(dest2)CornDriverTest.out $(dest2)BeansDriverTest.out
 
 execute: $(list)
 	g++ -Wall -std=c++11 main.cpp $(list) $(sfml) -o $(dest)main.out
@@ -65,10 +65,18 @@ $(dest2)TimerDriverTest.out: $(dest2)TimerDriverTest.cpp
 $(dest2)WheatDriverTest.out: $(dest2)WheatDriverTest.cpp
 	g++ -Wall $(dest2)WheatDriverTest.cpp Timer.cpp Land.cpp Farmland.cpp WheatCrop.cpp Player.cpp $(sfml) -o $(dest2)WheatDriverTest.out
 
+$(dest2)CornDriverTest.out: $(dest2)CornDriverTest.cpp
+	g++ -Wall $(dest2)CornDriverTest.cpp Timer.cpp Land.cpp Farmland.cpp CornCrop.cpp Player.cpp $(sfml) -o $(dest2)CornDriverTest.out
+
+$(dest2)BeansDriverTest.out: $(dest2)BeansDriverTest.cpp
+	g++ -Wall $(dest2)BeansDriverTest.cpp Timer.cpp Land.cpp Farmland.cpp Bean.cpp Player.cpp $(sfml) -o $(dest2)BeansDriverTest.out
+
 
 
 test_all: $(test)
 	./$(dest2)MenuDriverTest.out
 	./$(dest2)TimerDriverTest.out
 	./$(dest2)WheatDriverTest.out
+	./$(dest2)CornDriverTest.out
+	./$(dest2)BeansDriverTest.out
 

@@ -9,9 +9,6 @@ private:
 
   int _nButtons;
 
-  // void setRectSize(int index, sf::Vector2f v);
-  // void setRectPosition(int index, int x, int y);
-  // void setRectFillColor(int index, sf::Color c);
   
 public:
   Menu();

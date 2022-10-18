@@ -31,6 +31,13 @@ int Player::getSeeds(std::string seedName){
   return _seeds.at(seedName);
 }
 
+void Player::setXP(int xp){
+  _xp = xp;
+}
+void Player::setCoins(int coins){
+  _coins = coins;
+}
+
 void Player::incremCoins(int n){
   _coins+=n;
 }

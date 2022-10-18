@@ -4,14 +4,14 @@
 #include "../Farmland.h"
 #include "../Menu.h"
 #include "../Player.h"
-#include "../WheatCrop.h"
+#include "../CornCrop.h"
 
 int main() {
-  sf::RenderWindow window(sf::VideoMode(400, 400), "Wheat test");
+  sf::RenderWindow window(sf::VideoMode(400, 400), "Corn Test");
   //   sf::CircleShape shape(100.f);
   //   shape.setFillColor(sf::Color::Green);
 
-  Wheat w;
+  Corn c;
 
   Player* p = new Player;
 
@@ -22,23 +22,23 @@ int main() {
   }
   textureFile.create(192, 128);
 
-  w.setPosition(window.getSize().x / 2, window.getSize().x / 2);
+  c.setPosition(window.getSize().x / 2, window.getSize().x / 2);
 
   sf::Sprite seeded;
   seeded.setTexture(textureFile);
-  seeded.setTextureRect(sf::IntRect(64, 0, 32, 32));  // wheat seeded texture
+  seeded.setTextureRect(sf::IntRect(64, 64, 32, 32));  // Corn seeded texture
 
   sf::Sprite fully;
   fully.setTexture(textureFile);
-  fully.setTextureRect(sf::IntRect(96, 0, 32, 64));  // wheat fully texture
+  fully.setTextureRect(sf::IntRect(128, 0, 32, 64));  // Corn fully texture
   fully.setOrigin(0, 32);
 
   sf::Sprite half;
   half.setTexture(textureFile);
-  half.setTextureRect(sf::IntRect(96, 64, 32, 64));  // wheat fully texture
+  half.setTextureRect(sf::IntRect(128, 64, 32, 64));  // Corn fully texture
   half.setOrigin(0, 32);
 
-  w.PlantCrop(p);
+  c.PlantCrop(p);
 
 
   while (window.isOpen()) {
@@ -49,21 +49,19 @@ int main() {
 
     window.clear();
 
-    w.updateGrowth();
-    if (w.getGrowth() == 0) {
-      w.setSprite(seeded);
-      w.setPosition(6, 6);
+    c.updateGrowth();
+    if (c.getGrowth() == 0) {
+      c.setSprite(seeded);
     }
-    if (w.getGrowth() == 1) {
-      w.setSprite(half);
-      w.setPosition(6, 6);
+    if (c.getGrowth() == 1) {
+      c.setSprite(half);
     }
-    if (w.getGrowth() == 2) {
-      w.setSprite(fully);
-      w.setPosition(6, 6);
+    if (c.getGrowth() == 2) {
+      c.setSprite(fully);
     }
+    c.setPosition(6, 6);
 
-    window.draw(w.getSprite());
+    window.draw(c.getSprite());
 
     window.display();
   }
