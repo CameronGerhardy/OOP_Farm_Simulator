@@ -13,12 +13,16 @@ private:
     bool m_bRunning = false;
 
 public:
+    //starts timer
     void start();
     
+    //stops timer
     void stop();
     
+    //gets elapsed time in milliseconds
     double elapsedMilliseconds();
     
+    //gets elapsed time in seconds
     double elapsedSeconds();
 
 };

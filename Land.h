@@ -14,15 +14,26 @@ protected:
 public:
   Land();
   Land(sf::Sprite sprite);
+
+  //sets the sprite
   void setSprite(sf::Sprite sprite);
+
+  //sets the position
   void setPosition(int TilePosX, int TilePosY);
+
+  //returns the sprite
   sf::Sprite getSprite();
   
-  //abstract
+  //abstract -- returns the type of land
   virtual std::string getLandType() = 0;
   
+  //updates the growth variable depending on the timer
   virtual void updateGrowth();
+
+  //harvests the crop and adds xp and seeds to player
   virtual void HarvestCrop(Player* p); 
+
+  //plants crop, starts timer, removes seeds from player
   virtual void PlantCrop(Player* p); 
 
   virtual ~Land(){};
